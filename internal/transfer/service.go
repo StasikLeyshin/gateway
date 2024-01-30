@@ -15,3 +15,7 @@ type Transfer interface {
 
 type transfer struct {
 }
+
+func NewTransfer() *transfer {
+	return &transfer{}
+}
