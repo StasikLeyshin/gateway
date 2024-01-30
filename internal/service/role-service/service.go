@@ -1,5 +1,7 @@
 package role_service
 
+import "gateway/internal/service/service"
+
 //import def "gateway/internal/service"
 //
 //var _ def.RoleService = (*service)(nil)
@@ -37,6 +39,16 @@ package role_service
 //	return response, nil
 //}
 
-type RoleService interface {
-	LoginService
+//type RoleService interface {
+//	LoginService
+//}
+
+type roleService struct {
+	service *service.GlobalService
+}
+
+func New(service *service.GlobalService) *roleService {
+	return &roleService{
+		service: service,
+	}
 }

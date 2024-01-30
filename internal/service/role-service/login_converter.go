@@ -2,22 +2,18 @@ package role_service
 
 import desc "github.com/StasikLeyshin/libs-proto/grpc-gateway/role-service/pb"
 
-func (convert *LoginRequest) FromService(request *desc.LoginRequest) *desc.LoginRequest {
+func (convert *LoginRequest) FromService(value *desc.LoginRequest) *desc.LoginRequest {
 	return nil
 }
 
-func NewLoginRequest() *LoginRequest {
-	return &LoginRequest{}
-}
-
-func (convert *LoginRequest) ToService(request *desc.LoginRequest) *LoginRequest {
+func (convert *LoginRequest) ToService(value *desc.LoginRequest) *LoginRequest {
 	return nil
 }
 
-func (convert *LoginResponse) FromService(request *desc.LoginResponse) *desc.LoginResponse {
+func (convert *LoginResponse) FromService(value *desc.LoginResponse) *desc.LoginResponse {
 	return nil
 }
 
-func (convert *LoginResponse) ToService(request *desc.LoginResponse) *LoginResponse {
+func (convert *LoginResponse) ToService(value *desc.LoginResponse) *LoginResponse {
 	return nil
 }

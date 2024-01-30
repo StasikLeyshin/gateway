@@ -1,13 +1,24 @@
 package service
 
-import (
-	"gateway/internal/service/role-service"
-)
+import role_service "gateway/internal/service/role-service"
+
+type RoleService interface {
+	role_service.LoginService
+}
 
 type MicroServices interface {
-	role_service.RoleService
+	RoleService
 }
 
 //type GlobalService interface {
 //	GetRoleServiceMethods() RoleService
+//}
+
+//type microServices struct {
+//	role_service.RoleService
+//}
+//
+//func re() {
+//	microServices1 := microServices{}
+//	microServices1.Login()
 //}
