@@ -3,6 +3,7 @@ module gateway
 go 1.21.4
 
 require (
+	github.com/StasikLeyshin/libs-proto/grpc-gateway/role-service v0.0.7
 	github.com/grpc-ecosystem/grpc-gateway/v2 v2.18.1
 	github.com/sirupsen/logrus v1.9.3
 	google.golang.org/genproto/googleapis/api v0.0.0-20231106174013-bbf56f31fb17
@@ -12,7 +13,6 @@ require (
 )
 
 require github.com/StasikLeyshin/libs-proto/grpc/manage-server-service v0.0.8 // indirect
-require github.com/StasikLeyshin/libs-proto/grpc-gateway/role-service v0.0.6 // indirect
 
 require (
 	github.com/golang/protobuf v1.5.3 // indirect; indirec
