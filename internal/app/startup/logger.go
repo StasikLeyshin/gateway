@@ -1,10 +1,10 @@
 package startup
 
-//import (
-//	"github.com/sirupsen/logrus"
-//	logger "refactoring/pkg"
-//)
-//
-//func NewLogger() *logrus.Logger {
-//	return logger.NewLogger()
-//}
+import (
+	logger "gateway/pkg"
+	"github.com/sirupsen/logrus"
+)
+
+func NewLogger() *logrus.Logger {
+	return logger.NewLogger()
+}
