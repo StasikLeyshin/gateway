@@ -3,16 +3,15 @@ package grpc
 import (
 	"context"
 	"fmt"
-	"github.com/StasikLeyshin/grpc-kafka-services/internal/api/server"
-	desc "github.com/StasikLeyshin/grpc-kafka-services/pkg/server_v1"
-	"github.com/grpc-ecosystem/grpc-gateway/v2/runtime"
+	roleServiceGRPC "gateway/internal/api/grpc-gateway/role-service"
+	roleService "gateway/internal/service/role-service"
+	"gateway/internal/service/service"
+	desc "github.com/StasikLeyshin/libs-proto/grpc-gateway/role-service/pb"
 	"github.com/sirupsen/logrus"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/credentials/insecure"
 	"google.golang.org/grpc/reflection"
-	"log"
 	"net"
-	"net/http"
 )
 
 type Config struct {
@@ -21,25 +20,29 @@ type Config struct {
 }
 
 type ServerGRPC struct {
-	grpcServer           *grpc.Server
-	implementationServer *server.Implementation
-	port                 int
-	logger               *logrus.Logger
+	grpcServer *grpc.Server
+	//implementationServer *role_service.RoleService
+	port   int
+	logger *logrus.Logger
 }
 
-func NewServerGRPC(port int, implementationServer *server.Implementation, logger *logrus.Logger) *ServerGRPC {
+func Registration(s grpc.ServiceRegistrar, service *service.GlobalService) {
+	desc.RegisterRoleServiceServer(s, roleServiceGRPC.NewImplementationRoleService(roleService.NewRoleService(service)))
+}
+
+func NewServerGRPC(port int, service *service.GlobalService, logger *logrus.Logger) *ServerGRPC {
 
 	grpcServer := grpc.NewServer(grpc.Creds(insecure.NewCredentials()))
 
 	reflection.Register(grpcServer)
 
-	desc.RegisterManagerServiceServer(grpcServer, implementationServer)
+	Registration(grpcServer, service)
 
 	return &ServerGRPC{
-		grpcServer:           grpcServer,
-		implementationServer: implementationServer,
-		port:                 port,
-		logger:               logger,
+		grpcServer: grpcServer,
+		//implementationServer: implementationServer,
+		port:   port,
+		logger: logger,
 	}
 }
 
@@ -56,20 +59,20 @@ func (s *ServerGRPC) Start() error {
 		}
 	}()
 
-	ctx := context.Background()
-	ctx, cancel := context.WithCancel(ctx)
-	defer cancel()
-
-	mux := runtime.NewServeMux()
-	opts := []grpc.DialOption{grpc.WithTransportCredentials(insecure.NewCredentials())}
-	err = desc.RegisterManagerServiceHandlerFromEndpoint(ctx, mux, "localhost:5000", opts)
-	if err != nil {
-		panic(err)
-	}
-	log.Printf("server listening at 5001")
-	if err := http.ListenAndServe(":5001", mux); err != nil {
-		panic(err)
-	}
+	//ctx := context.Background()
+	//ctx, cancel := context.WithCancel(ctx)
+	//defer cancel()
+	//
+	//mux := runtime.NewServeMux()
+	//opts := []grpc.DialOption{grpc.WithTransportCredentials(insecure.NewCredentials())}
+	//err = desc.RegisterRoleServiceHandlerFromEndpoint(ctx, mux, "localhost:5000", opts)
+	//if err != nil {
+	//	panic(err)
+	//}
+	//log.Printf("server listening at 5001")
+	//if err := http.ListenAndServe(":5001", mux); err != nil {
+	//	panic(err)
+	//}
 
 	return nil
 }
