@@ -5,13 +5,13 @@ import (
 	desc "github.com/StasikLeyshin/libs-proto/grpc-gateway/role-service/pb"
 )
 
-type Implementation struct {
+type RoleService struct {
 	desc.UnimplementedRoleServiceServer
-	service service.GlobalService
+	service service.RoleService
 }
 
-func NewImplementation(service service.GlobalService) *Implementation {
-	return &Implementation{
+func NewImplementationRoleService(service service.RoleService) *RoleService {
+	return &RoleService{
 		service: service,
 	}
 }
