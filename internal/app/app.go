@@ -2,18 +2,15 @@ package app
 
 import (
 	"context"
-	roleServiceGRPC "gateway/internal/api/grpc-gateway/role-service"
-	roleService "gateway/internal/service/role-service"
-	"gateway/internal/service/service"
-	desc "github.com/StasikLeyshin/libs-proto/grpc-gateway/role-service/pb"
 	"github.com/sirupsen/logrus"
 	"os/signal"
 	"syscall"
 )
 
 type App struct {
-	logger     *logrus.Logger
-	components []component
+	serviceProvider *serviceProvider
+	logger          *logrus.Logger
+	components      []component
 }
 
 type component interface {
@@ -21,18 +18,51 @@ type component interface {
 	Stop(ctx context.Context) error
 }
 
-func NewApp(logger *logrus.Logger, components ...component) *App {
-	return &App{
-		logger:     logger,
-		components: components,
+func NewApp(ctx context.Context, logger *logrus.Logger) (*App, error) {
+	app := &App{}
+
+	err := app.initDeps(ctx)
+	if err != nil {
+		return nil, err
 	}
+
+	return &App{}, nil
 }
 
-func Initialization(service *service.GlobalService) map[any]any {
-	registrations := make(map[any]any)
+func (a *App) initDeps(ctx context.Context) error {
+	inits := []func(context.Context) error{
+		a.initConfig,
+		a.initServiceProvider,
+		a.initGRPCServer,
+	}
 
-	registrations[roleServiceGRPC.NewImplementationRoleService(roleService.NewRoleService(service))] = desc.RegisterRoleServiceServer
-	return registrations
+	for _, f := range inits {
+		err := f(ctx)
+		if err != nil {
+			return err
+		}
+	}
+
+	return nil
+}
+
+//func NewApp(logger *logrus.Logger, components ...component) *App {
+//	return &App{
+//		logger:     logger,
+//		components: components,
+//	}
+//}
+
+//func Initialization(service *service.GlobalService) map[any]any {
+//	registrations := make(map[any]any)
+//
+//	registrations[roleServiceGRPC.NewImplementationRoleService(roleService.NewRoleService(service))] = desc.RegisterRoleServiceServer
+//	return registrations
+//}
+
+func Initialization() {
+
+	return
 }
 
 func (a *App) Run(ctx context.Context) {
