@@ -61,7 +61,6 @@ func (a *App) initDeps(ctx context.Context) error {
 //}
 
 func Initialization() {
-
 	return
 }
 
