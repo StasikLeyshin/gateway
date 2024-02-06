@@ -55,6 +55,11 @@ func (a *App) initConfig(_ context.Context) error {
 	return nil
 }
 
+func (a *App) initServiceProvider(_ context.Context) error {
+	a.serviceProvider = newServiceProvider()
+	return nil
+}
+
 //func NewApp(logger *logrus.Logger, components ...component) *App {
 //	return &App{
 //		logger:     logger,
