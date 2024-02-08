@@ -50,7 +50,6 @@ func (a *App) initConfig(_ context.Context) error {
 	//if err != nil {
 	//	return err
 	//}
-
 	return nil
 }
 
