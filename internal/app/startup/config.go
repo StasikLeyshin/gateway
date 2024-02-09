@@ -2,19 +2,23 @@ package startup
 
 import (
 	"fmt"
+	"gateway/internal/server/grpc"
+
 	//"github.com/StasikLeyshin/grpc-kafka-services/internal/server/grpc"
 	"gopkg.in/yaml.v3"
 	"os"
 )
 
 type Config struct {
-	GrpcConfig GrpcConfig `yaml:"grpc"`
+	Grpc        grpc.Config `yaml:"grpc"`
+	GrpcGateway grpc.Config `yaml:"grpc_gateway"`
+	//GrpcConfig GrpcConfig `yaml:"grpc"`
 	//KafkaConfig KafkaConfig    `yaml:"kafka"`
 	//Database    DatabaseConfig `yaml:"database"`
 }
 
-func NewConfig(configFile string) (*Config, error) {
-	rawYAML, err := os.ReadFile(configFile)
+func NewConfig(configPath string) (*Config, error) {
+	rawYAML, err := os.ReadFile(configPath)
 	if err != nil {
 		return nil, fmt.Errorf("reading file error: %w", err)
 	}
@@ -26,3 +30,12 @@ func NewConfig(configFile string) (*Config, error) {
 
 	return cfg, nil
 }
+
+//func (c *Config) Reconfiguration(configPath string) (*Config, error) {
+//	config, err := NewConfig(configPath)
+//	if err != nil {
+//		return nil, err
+//	}
+//
+//	c = config
+//}
