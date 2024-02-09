@@ -15,22 +15,20 @@ import (
 )
 
 type Config struct {
-	Host string `yaml:"host"`
-	Port string `yaml:"port"`
+	Port int `yaml:"port"`
 }
 
 type ServerGRPC struct {
 	grpcServer *grpc.Server
-	//implementationServer *role_service.RoleService
-	port   int
-	logger *logrus.Logger
+	port       int
+	logger     *logrus.Logger
 }
 
 func Registration(s grpc.ServiceRegistrar, service *service.GlobalService) {
 	desc.RegisterRoleServiceServer(s, roleServiceGRPC.NewImplementationRoleService(roleService.NewRoleService(service)))
 }
 
-func NewServerGRPC(port int, service *service.GlobalService, logger *logrus.Logger) *ServerGRPC {
+func NewServerGRPC(config Config, service *service.GlobalService, logger *logrus.Logger) *ServerGRPC {
 
 	grpcServer := grpc.NewServer(grpc.Creds(insecure.NewCredentials()))
 
@@ -41,7 +39,7 @@ func NewServerGRPC(port int, service *service.GlobalService, logger *logrus.Logg
 	return &ServerGRPC{
 		grpcServer: grpcServer,
 		//implementationServer: implementationServer,
-		port:   port,
+		port:   config.Port,
 		logger: logger,
 	}
 }
