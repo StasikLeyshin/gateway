@@ -2,8 +2,6 @@ package main
 
 import (
 	"gateway/internal/app/startup"
-	"gateway/internal/service/service"
-	"gateway/internal/transfer"
 )
 
 func main() {
@@ -21,7 +19,7 @@ func main() {
 	}
 
 	// Клиент для реализации бизнес-логики
-	serviceClient := service.NewGlobalService(transfer.NewTransfer())
+	//serviceClient := service.NewGlobalService(transfer.NewTransfer())
 
 	//app.Initialization(serviceClient)
 
