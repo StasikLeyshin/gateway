@@ -11,6 +11,7 @@ type App struct {
 	serviceProvider *serviceProvider
 	logger          *logrus.Logger
 	components      []component
+	configPath      string
 }
 
 type component interface {
@@ -18,21 +19,24 @@ type component interface {
 	Stop(ctx context.Context) error
 }
 
-func NewApp(ctx context.Context, logger *logrus.Logger) (*App, error) {
-	app := &App{}
+func NewApp(ctx context.Context, configPath string, logger *logrus.Logger) (*App, error) {
+	app := &App{
+		configPath: configPath,
+	}
 
 	err := app.initDeps(ctx)
 	if err != nil {
 		return nil, err
 	}
 
-	return &App{}, nil
+	return app, nil
 }
 
 func (a *App) initDeps(ctx context.Context) error {
 	inits := []func(context.Context) error{
-		a.initConfig,
 		a.initServiceProvider,
+		a.initConfig,
+		a.initGRPCServer,
 	}
 
 	for _, f := range inits {
@@ -45,16 +49,16 @@ func (a *App) initDeps(ctx context.Context) error {
 	return nil
 }
 
-func (a *App) initConfig(_ context.Context) error {
-	//err := config.Load(".env")
-	//if err != nil {
-	//	return err
-	//}
+func (a *App) initServiceProvider(_ context.Context) error {
+	a.serviceProvider = newServiceProvider()
 	return nil
 }
 
-func (a *App) initServiceProvider(_ context.Context) error {
-	a.serviceProvider = newServiceProvider()
+func (a *App) initConfig(_ context.Context) error {
+	err := a.serviceProvider.initConfig(a.configPath)
+	if err != nil {
+		return err
+	}
 	return nil
 }
 
@@ -72,8 +76,20 @@ func (a *App) initServiceProvider(_ context.Context) error {
 //	return registrations
 //}
 
-func Initialization() {
-	return
+//func (a *App) initModule(_ context.Context) {
+//	a.serviceProvider.GlobalService()
+//	return
+//}
+
+func (a *App) initGRPCServer(_ context.Context) error {
+
+	//a.grpcServer = grpc.NewServer(grpc.Creds(insecure.NewCredentials()))
+	//
+	//reflection.Register(a.grpcServer)
+	//
+	//desc.RegisterUserV1Server(a.grpcServer, a.serviceProvider.UserImpl())
+
+	return nil
 }
 
 func (a *App) Run(ctx context.Context) {
