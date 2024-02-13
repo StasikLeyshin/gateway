@@ -9,8 +9,6 @@ import (
 	desc "github.com/StasikLeyshin/libs-proto/grpc-gateway/role-service/pb"
 	"github.com/sirupsen/logrus"
 	"google.golang.org/grpc"
-	"google.golang.org/grpc/credentials/insecure"
-	"google.golang.org/grpc/reflection"
 	"net"
 )
 
@@ -28,18 +26,18 @@ func Registration(s grpc.ServiceRegistrar, service *service.GlobalService) {
 	desc.RegisterRoleServiceServer(s, roleServiceGRPC.NewImplementationRoleService(roleService.NewRoleService(service)))
 }
 
-func NewServerGRPC(config Config, service *service.GlobalService, logger *logrus.Logger) *ServerGRPC {
+func NewServerGRPC(grpcServer *grpc.Server, logger *logrus.Logger) *ServerGRPC {
 
-	grpcServer := grpc.NewServer(grpc.Creds(insecure.NewCredentials()))
-
-	reflection.Register(grpcServer)
-
-	Registration(grpcServer, service)
+	//grpcServer := grpc.NewServer(grpc.Creds(insecure.NewCredentials()))
+	//
+	//reflection.Register(grpcServer)
+	//
+	//Registration(grpcServer, service)
 
 	return &ServerGRPC{
 		grpcServer: grpcServer,
 		//implementationServer: implementationServer,
-		port:   config.Port,
+		//port:   config.Port,
 		logger: logger,
 	}
 }
