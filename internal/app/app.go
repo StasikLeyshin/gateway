@@ -22,6 +22,7 @@ type component interface {
 func NewApp(ctx context.Context, configPath string, logger *logrus.Logger) (*App, error) {
 	app := &App{
 		configPath: configPath,
+		logger:     logger,
 	}
 
 	err := app.initDeps(ctx)
@@ -37,6 +38,7 @@ func (a *App) initDeps(ctx context.Context) error {
 		a.initServiceProvider,
 		a.initConfig,
 		a.initGRPCServer,
+		a.initComponents,
 	}
 
 	for _, f := range inits {
@@ -50,7 +52,7 @@ func (a *App) initDeps(ctx context.Context) error {
 }
 
 func (a *App) initServiceProvider(_ context.Context) error {
-	a.serviceProvider = newServiceProvider()
+	a.serviceProvider = newServiceProvider(a.logger)
 	return nil
 }
 
@@ -82,12 +84,13 @@ func (a *App) initConfig(_ context.Context) error {
 //}
 
 func (a *App) initGRPCServer(_ context.Context) error {
+	a.serviceProvider.initGRPCServer()
 
-	//a.grpcServer = grpc.NewServer(grpc.Creds(insecure.NewCredentials()))
-	//
-	//reflection.Register(a.grpcServer)
-	//
-	//desc.RegisterUserV1Server(a.grpcServer, a.serviceProvider.UserImpl())
+	return nil
+}
+
+func (a *App) initComponents(_ context.Context) error {
+	a.components = a.serviceProvider.initComponents()
 
 	return nil
 }
