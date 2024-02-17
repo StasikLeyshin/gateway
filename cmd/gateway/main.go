@@ -4,9 +4,6 @@ import (
 	"context"
 	"gateway/internal/app"
 	"gateway/internal/app/startup"
-	"gateway/internal/server/grpc"
-	"gateway/internal/service/service"
-	"gateway/internal/transfer"
 )
 
 func main() {
@@ -18,13 +15,13 @@ func main() {
 	logger := startup.NewLogger()
 
 	// Парсим файл конфигурации
-	config, err := startup.NewConfig(configPath)
-	if err != nil {
-		logger.Fatalf("failed to Config: %v", err)
-	}
+	//config, err := startup.NewConfig(configPath)
+	//if err != nil {
+	//	logger.Fatalf("failed to Config: %v", err)
+	//}
 
 	// Клиент для реализации бизнес-логики
-	serviceClient := service.NewGlobalService(transfer.NewTransfer())
+	//serviceClient := service.NewGlobalService(transfer.NewTransfer())
 
 	//app.Initialization(serviceClient)
 
@@ -32,8 +29,16 @@ func main() {
 	//implementationServer := role_service.NewRoleService(serviceClient)
 	//
 	// Создаём экземпляр grpc сервера
-	grpcClient := grpc.NewServerGRPC(config.GrpcConfig.Port, serviceClient, logger)
+	//grpcClient := grpc.NewServerGRPC(config.GrpcConfig.Port, serviceClient, logger)
 
 	// Запускаем компонент grpc сервера
-	app.NewApp(logger, grpcClient).Run(context.Background())
+	//app.NewApp(logger, grpcClient).Run(context.Background())
+
+	startApp, err := app.NewApp(context.Background(), configPath, logger)
+	if err != nil {
+		logger.Fatalf("failed to app: %v", err)
+		return
+	}
+
+	startApp.Run(context.Background())
 }
