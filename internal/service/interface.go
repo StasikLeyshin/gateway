@@ -1,9 +1,19 @@
 package service
 
-import role_service "gateway/internal/service/role-service"
+import (
+	"context"
+	"gateway/internal/service/role-service/model"
+)
+
+type (
+	LoginService interface {
+		Login(ctx context.Context, request *model.LoginRequest) (*model.LoginResponse, error)
+		NewRequest() *model.LoginRequest
+	}
+)
 
 type RoleService interface {
-	role_service.LoginService
+	LoginService
 }
 
 type MicroServices interface {
