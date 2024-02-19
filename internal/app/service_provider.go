@@ -2,7 +2,7 @@ package app
 
 import (
 	roleServiceGRPC "gateway/internal/api/grpc-gateway/role-service"
-	"gateway/internal/app/startup"
+	"gateway/internal/app/configuration"
 	server "gateway/internal/server/grpc"
 	roleService "gateway/internal/service/role-service"
 	"gateway/internal/service/service"
@@ -17,7 +17,7 @@ import (
 type serviceProvider struct {
 	logger *logrus.Logger
 
-	config  *startup.Config
+	config  *configuration.Config
 	service *service.GlobalService
 
 	grpcServer *grpc.Server
@@ -33,7 +33,7 @@ func newServiceProvider(logger *logrus.Logger) *serviceProvider {
 
 func (s *serviceProvider) initConfig(configPath string) error {
 	if s.config == nil {
-		config, err := startup.NewConfig(configPath)
+		config, err := configuration.NewConfig(configPath)
 		if err != nil {
 			return err
 		}
