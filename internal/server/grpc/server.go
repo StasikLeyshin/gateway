@@ -76,5 +76,6 @@ func (s *ServerGRPC) Start() error {
 func (s *ServerGRPC) Stop(ctx context.Context) error {
 	s.logger.Info("server is stopping")
 	s.grpcServer.Stop()
+
 	return nil
 }
