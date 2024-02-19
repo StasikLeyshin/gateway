@@ -3,7 +3,7 @@ package main
 import (
 	"context"
 	"gateway/internal/app"
-	"gateway/internal/app/startup"
+	"gateway/internal/app/configuration"
 )
 
 func main() {
@@ -12,10 +12,10 @@ func main() {
 	configPath := "config/config.local.yaml" //os.Getenv("CONFIG_PATH")
 
 	// Создаём логгер
-	logger := startup.NewLogger()
+	logger := configuration.NewLogger()
 
 	// Парсим файл конфигурации
-	//config, err := startup.NewConfig(configPath)
+	//config, err := configuration.NewConfig(configPath)
 	//if err != nil {
 	//	logger.Fatalf("failed to Config: %v", err)
 	//}
