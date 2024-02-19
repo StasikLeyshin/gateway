@@ -1,4 +1,4 @@
-package startup
+package configuration
 
 type GrpcConfig struct {
 	Host string `yaml:"host"`

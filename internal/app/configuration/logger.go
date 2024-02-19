@@ -1,4 +1,4 @@
-package startup
+package configuration
 
 import (
 	logger "gateway/pkg"

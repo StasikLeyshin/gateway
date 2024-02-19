@@ -1,4 +1,4 @@
-package startup
+package configuration
 
 import (
 	"fmt"
@@ -31,11 +31,21 @@ func NewConfig(configPath string) (*Config, error) {
 	return cfg, nil
 }
 
-//func (c *Config) Reconfiguration(configPath string) (*Config, error) {
-//	config, err := NewConfig(configPath)
-//	if err != nil {
-//		return nil, err
-//	}
-//
-//	c = config
-//}
+func (c *Config) ReConfigure(configPath string) (*Config, error) {
+	config, err := NewConfig(configPath)
+	if err != nil {
+		return nil, err
+	}
+
+	c = config
+
+	return c, nil
+}
+
+func (c *Config) GetGrpcConfig() grpc.Config {
+	return c.Grpc
+}
+
+func (c *Config) GetGrpcGatewayConfig() grpc.Config {
+	return c.GrpcGateway
+}
