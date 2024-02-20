@@ -23,7 +23,7 @@ type (
 	Status int
 
 	Configurator[Config any] interface {
-		Start() error
+		Start(ctx context.Context) error
 		Stop(ctx context.Context) error
 		Configure(ctx context.Context, config Config) error
 	}
