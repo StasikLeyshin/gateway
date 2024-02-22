@@ -7,6 +7,7 @@ import (
 	roleService "gateway/internal/service/role-service"
 	"gateway/internal/service/service"
 	"gateway/internal/transfer"
+	"gateway/pkg/components"
 	desc "github.com/StasikLeyshin/libs-proto/grpc-gateway/role-service/pb"
 	"github.com/sirupsen/logrus"
 	"google.golang.org/grpc"
@@ -98,9 +99,13 @@ func (s *serviceProvider) initGRPCServer() *grpc.Server {
 
 func (s *serviceProvider) initComponents() []component {
 
-	components := []component{
-		server.NewServerGRPC(s.grpcServer, s.logger),
-	}
+	//components := []component{
+	//	server.NewServerGRPC(s.grpcServer, s.logger),
+	//}
 
-	return components
+	components1 := components.Components[configuration.Config]{}
+
+	components.AddComponent(components1, server.NewServerGRPC(s.grpcServer, s.logger))
+
+	return nil
 }
