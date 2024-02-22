@@ -42,7 +42,7 @@ func NewServerGRPC(grpcServer *grpc.Server, logger *logrus.Logger) *ServerGRPC {
 	}
 }
 
-func (s *ServerGRPC) Start() error {
+func (s *ServerGRPC) Start(ctx context.Context) error {
 	list, err := net.Listen("tcp", fmt.Sprintf(":%d", s.port))
 	if err != nil {
 		return fmt.Errorf("failed to listen port %d: %v", s.port, err)
@@ -76,6 +76,12 @@ func (s *ServerGRPC) Start() error {
 func (s *ServerGRPC) Stop(ctx context.Context) error {
 	s.logger.Info("server is stopping")
 	s.grpcServer.Stop()
+
+	return nil
+}
+
+func (s *ServerGRPC) Configure(ctx context.Context, config Config) error {
+	s.port = config.Port
 
 	return nil
 }
