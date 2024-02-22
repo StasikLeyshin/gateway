@@ -95,6 +95,14 @@ func (a *App) initComponents(_ context.Context) error {
 	return nil
 }
 
+//func (a *App) Run1(ctx context.Context) {
+//	components1 := components.Components[configuration.Config]{}
+//
+//	for _, comp := range a.components {
+//		components.AddComponent(components1, comp)
+//	}
+//}
+
 func (a *App) Run(ctx context.Context) {
 	componentsCtx, componentsStopCtx := signal.NotifyContext(ctx, syscall.SIGHUP,
 		syscall.SIGINT, syscall.SIGTERM, syscall.SIGQUIT)
