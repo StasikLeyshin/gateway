@@ -103,9 +103,9 @@ func (s *serviceProvider) initComponents() []component {
 	//	server.NewServerGRPC(s.grpcServer, s.logger),
 	//}
 
-	components1 := components.Components[configuration.Config]{}
+	components1 := components.Components[*configuration.Config]{}
 
-	components.AddComponent(components1, server.NewServerGRPC(s.grpcServer, s.logger))
+	components.AddComponent(components1, server.NewServerGRPC(s.grpcServer, s.logger), (*configuration.Config).GetGrpcConfig)
 
 	return nil
 }
