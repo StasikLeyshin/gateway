@@ -28,10 +28,16 @@ type (
 		Configure(ctx context.Context, config Config) error
 	}
 
+	SubConfigurator[SubConfig any] interface {
+		Start(ctx context.Context) error
+		Stop(ctx context.Context) error
+		Configure(ctx context.Context, config SubConfig) error
+	}
+
 	ComponentFunc[Config any] func(ctx context.Context, config Config) error
 
 	Component[Config any] struct {
-		configurator Configurator[Config]
+		configurator SubConfigurator[Config]
 		status       Status
 	}
 
@@ -39,6 +45,10 @@ type (
 		Components []*Component[Config]
 	}
 )
+
+type ConfigureFunc[Config any] func(ctx context.Context, config Config, init bool) error
+
+type ConfigAdapter[Config any, SubConfig any] func(self Config) SubConfig
 
 func (c *Components[Config]) Add(configurator Configurator[Config]) {
 	component := &Component[Config]{
@@ -51,16 +61,18 @@ func (c *Components[Config]) Add(configurator Configurator[Config]) {
 }
 
 func AddComponent[
-Config any,
-component
+	Config any,
+	SubConfig any,
+	Conf Configurator[SubConfig],
 ](
 	components Components[Config],
-	config Configurator[Config],
+	configurator Conf,
+	adapter ConfigAdapter[Config, SubConfig],
 ) {
-	//components.Add(config)
-	components.Add(func(ctx context.Context, config Config, init bool) error {
-		return module.Configure(ctx, adapter(config), init)
-	})
+	components.Add(configurator)
+	//components.Add(func(ctx context.Context, config Config, init bool) error {
+	//	return module.Configure(ctx, adapter(config), init)
+	//})
 }
 
 func Add[Config any, SubConfig any, Group intoGroup[Config], Module Configurator[SubConfig]](
