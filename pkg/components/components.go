@@ -1,25 +1,21 @@
 package components
 
-import "context"
+import (
+	"context"
+	"fmt"
+)
 
 const (
 	Stopped Status = 0
 	Started Status = 1
 )
 
-type (
-	//Starter interface {
-	//	Start() error
-	//}
-	//
-	//Stopper interface {
-	//	Stop(ctx context.Context) error
-	//}
-	//
-	//Configurator[Config any] interface {
-	//	Configure(ctx context.Context, config Config) error
-	//}
+var ComponentError = map[Status]string{
+	Started: "This component has already started",
+	Stopped: "This component has already been stopped",
+}
 
+type (
 	Status int
 
 	Configurator[Config any] interface {
@@ -28,36 +24,92 @@ type (
 		Configure(ctx context.Context, config Config) error
 	}
 
-	SubConfigurator[SubConfig any] interface {
+	Control[SubConfig any] interface {
 		Start(ctx context.Context) error
 		Stop(ctx context.Context) error
-		Configure(ctx context.Context, config SubConfig) error
 	}
 
-	ComponentFunc[Config any] func(ctx context.Context, config Config) error
+	ComponentFunc[Config any]                func(ctx context.Context, config Config) error
+	ConfigAdapter[Config any, SubConfig any] func(self Config) SubConfig
 
 	Component[Config any] struct {
-		configurator SubConfigurator[Config]
-		status       Status
+		control       Control[Config]
+		configuration ComponentFunc[Config]
+		name          string
+		status        Status
 	}
 
 	Components[Config any] struct {
-		Components []*Component[Config]
+		components []*Component[Config]
 	}
 )
 
-type ConfigureFunc[Config any] func(ctx context.Context, config Config, init bool) error
+func NewComponents[Config any]() *Components[Config] {
+	return &Components[Config]{}
+}
 
-type ConfigAdapter[Config any, SubConfig any] func(self Config) SubConfig
-
-func (c *Components[Config]) Add(configurator Configurator[Config]) {
+func (c *Components[Config]) Add(configurator Control[Config], configuration ComponentFunc[Config], name string) {
 	component := &Component[Config]{
-		configurator: configurator,
-		status:       Stopped,
+		control:       configurator,
+		configuration: configuration,
+		name:          name,
+		status:        Stopped,
 	}
 
-	c.Components = append(c.Components, component)
+	c.components = append(c.components, component)
+}
 
+func (c *Components[Config]) actionError(component *Component[Config], text string, err error) error {
+	return fmt.Errorf("component name: %s | description: %s | error: %v", component.name, text, err)
+}
+
+func (c *Components[Config]) checkStatus(component *Component[Config], status Status) error {
+	if component.status != status {
+		component.status = status
+	} else {
+		return c.actionError(component, ComponentError[status], nil)
+	}
+	return nil
+}
+
+func (c *Components[Config]) Start(ctx context.Context) []error {
+	errors := make([]error, len(c.components))
+	for _, component := range c.components {
+		err := component.control.Start(ctx)
+		if err != nil {
+			errors = append(errors, c.actionError(component, "error when starting the component", err))
+		} else {
+			errors = append(errors, c.checkStatus(component, Started))
+		}
+	}
+	return errors
+}
+
+func (c *Components[Config]) Stop(ctx context.Context) []error {
+	errors := make([]error, len(c.components))
+	for _, component := range c.components {
+		err := component.control.Stop(ctx)
+		if err != nil {
+			errors = append(errors, c.actionError(component, "error when stopping the component", err))
+		} else {
+			errors = append(errors, c.checkStatus(component, Stopped))
+		}
+	}
+	return errors
+}
+
+func (c *Components[Config]) Configure(ctx context.Context, config Config) error {
+	//errors := make([]error, len(c.components))
+	for _, component := range c.components {
+		err := component.configuration(ctx, config)
+		if err != nil {
+			return c.actionError(component, "component configuration error", err)
+			//errors = append(errors, c.actionError(component, "component configuration error", err))
+		} else {
+			//errors = append(errors, c.checkStatus(component, Stopped))
+		}
+	}
+	return nil
 }
 
 func AddComponent[
@@ -65,22 +117,12 @@ func AddComponent[
 	SubConfig any,
 	Conf Configurator[SubConfig],
 ](
-	components Components[Config],
+	components *Components[Config],
 	configurator Conf,
 	adapter ConfigAdapter[Config, SubConfig],
+	name string,
 ) {
-	components.Add(configurator)
-	//components.Add(func(ctx context.Context, config Config, init bool) error {
-	//	return module.Configure(ctx, adapter(config), init)
-	//})
-}
-
-func Add[Config any, SubConfig any, Group intoGroup[Config], Module Configurator[SubConfig]](
-	group Group,
-	module Module,
-	adapter ConfigAdapter[Config, SubConfig],
-) {
-	group.intoGroup().AddModule(module, func(ctx context.Context, config Config, init bool) error {
-		return module.Configure(ctx, adapter(config), init)
-	})
+	components.Add(configurator, func(ctx context.Context, config Config) error {
+		return configurator.Configure(ctx, adapter(config))
+	}, name)
 }
