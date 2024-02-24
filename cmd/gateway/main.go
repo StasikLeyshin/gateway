@@ -40,5 +40,5 @@ func main() {
 		return
 	}
 
-	startApp.Run(context.Background())
+	startApp.Run1(context.Background())
 }
