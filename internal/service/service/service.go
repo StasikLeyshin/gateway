@@ -6,11 +6,11 @@ import (
 )
 
 type GlobalService struct {
-	transfer      transfer.Transfer
 	microServices service.MicroServices
+	transfer      transfer.Transfer
 }
 
-func NewGlobalService(transfer transfer.Transfer) *GlobalService {
+func NewGlobalService(microServices service.MicroServices, transfer transfer.Transfer) *GlobalService {
 	return &GlobalService{
 		transfer: transfer,
 	}
