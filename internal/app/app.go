@@ -39,6 +39,7 @@ func (a *App) initDeps(ctx context.Context) error {
 		a.initConfig,
 		a.initGRPCServer,
 		a.initComponents,
+		a.addComponents,
 	}
 
 	for _, f := range inits {
@@ -64,25 +65,6 @@ func (a *App) initConfig(_ context.Context) error {
 	return nil
 }
 
-//func NewApp(logger *logrus.Logger, components ...component) *App {
-//	return &App{
-//		logger:     logger,
-//		components: components,
-//	}
-//}
-
-//func Initialization(service *service.GlobalService) map[any]any {
-//	registrations := make(map[any]any)
-//
-//	registrations[roleServiceGRPC.NewImplementationRoleService(roleService.NewRoleService(service))] = desc.RegisterRoleServiceServer
-//	return registrations
-//}
-
-//func (a *App) initModule(_ context.Context) {
-//	a.serviceProvider.GlobalService()
-//	return
-//}
-
 func (a *App) initGRPCServer(_ context.Context) error {
 	a.serviceProvider.initGRPCServer()
 
@@ -90,18 +72,31 @@ func (a *App) initGRPCServer(_ context.Context) error {
 }
 
 func (a *App) initComponents(_ context.Context) error {
-	a.components = a.serviceProvider.initComponents()
+	a.serviceProvider.initComponents()
 
 	return nil
 }
 
-//func (a *App) Run1(ctx context.Context) {
-//	components1 := components.Components[configuration.Config]{}
-//
-//	for _, comp := range a.components {
-//		components.AddComponent(components1, comp)
-//	}
-//}
+func (a *App) addComponents(_ context.Context) error {
+	err := a.serviceProvider.addComponents()
+	if err != nil {
+		return err
+	}
+
+	return nil
+}
+
+func (a *App) Run1(ctx context.Context) {
+	componentsCtx, componentsStopCtx := signal.NotifyContext(ctx, syscall.SIGHUP,
+		syscall.SIGINT, syscall.SIGTERM, syscall.SIGQUIT)
+	defer componentsStopCtx()
+
+	a.serviceProvider.components.Start(ctx)
+
+	<-componentsCtx.Done()
+
+	a.serviceProvider.components.Stop(ctx)
+}
 
 func (a *App) Run(ctx context.Context) {
 	componentsCtx, componentsStopCtx := signal.NotifyContext(ctx, syscall.SIGHUP,

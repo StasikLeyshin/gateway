@@ -1,6 +1,7 @@
 package app
 
 import (
+	"context"
 	roleServiceGRPC "gateway/internal/api/grpc-gateway/role-service"
 	"gateway/internal/app/configuration"
 	server "gateway/internal/server/grpc"
@@ -13,10 +14,13 @@ import (
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/credentials/insecure"
 	"google.golang.org/grpc/reflection"
+	"time"
 )
 
 type serviceProvider struct {
 	logger *logrus.Logger
+
+	components *components.Components[*configuration.Config]
 
 	config  *configuration.Config
 	service *service.GlobalService
@@ -87,25 +91,32 @@ func (s *serviceProvider) initGRPCServer() *grpc.Server {
 	return s.grpcServer
 }
 
-//func (s *serviceProvider) initGRPCServer1() *grpc.Server {
-//	if s.serverGrpc == nil {
-//		s.serverGrpc = grpcServer.NewServerGRPC(config.GrpcConfig.Port, serviceClient, logger)
-//	}
-//
-//	s.serverGrpc =
-//
-//	return serverGrpc
-//}
+func (s *serviceProvider) initComponents() {
+	if s.components == nil {
+		s.components = components.NewComponents[*configuration.Config]()
+	}
+}
 
-func (s *serviceProvider) initComponents() []component {
+func (s *serviceProvider) addComponents() error {
+	components.AddComponent(s.components,
+		server.NewServerGRPC(s.grpcServer, s.logger),
+		(*configuration.Config).GetGrpcConfig,
+		"GRPC Server") // TODO: Вынести имена компонентов в файл с константами
 
-	//components := []component{
-	//	server.NewServerGRPC(s.grpcServer, s.logger),
-	//}
+	return nil
+}
 
-	components1 := components.Components[*configuration.Config]{}
+func (s *serviceProvider) Start(ctx context.Context) error {
+	s.components.Start(ctx)
 
-	components.AddComponent(components1, server.NewServerGRPC(s.grpcServer, s.logger), (*configuration.Config).GetGrpcConfig)
+	return nil
+}
+
+func (s *serviceProvider) Stop(ctx context.Context) error {
+	ctx, cancel := context.WithTimeout(ctx, time.Minute) // TODO: Вынести в конфиг
+	defer cancel()
+
+	s.components.Stop(ctx)
 
 	return nil
 }
