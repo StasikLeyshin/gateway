@@ -3,27 +3,24 @@ package grpc
 import (
 	"context"
 	"fmt"
-	roleServiceGRPC "gateway/internal/api/grpc-gateway/role-service"
-	roleService "gateway/internal/service/role-service"
-	"gateway/internal/service/service"
-	desc "github.com/StasikLeyshin/libs-proto/grpc-gateway/role-service/pb"
 	"github.com/sirupsen/logrus"
 	"google.golang.org/grpc"
 	"net"
 )
 
 type Config struct {
-	Port int `yaml:"port"`
+	Host string `yaml:"host"`
+	Port string `yaml:"port"`
 }
 
 type ServerGRPC struct {
 	grpcServer *grpc.Server
-	port       int
+	config     Config
 	logger     *logrus.Logger
 }
 
-func Registration(s grpc.ServiceRegistrar, service *service.GlobalService) {
-	desc.RegisterRoleServiceServer(s, roleServiceGRPC.NewImplementationRoleService(roleService.NewRoleService(service)))
+func (c *Config) Address() string {
+	return net.JoinHostPort(c.Host, c.Port)
 }
 
 func NewServerGRPC(grpcServer *grpc.Server, logger *logrus.Logger) *ServerGRPC {
@@ -43,15 +40,16 @@ func NewServerGRPC(grpcServer *grpc.Server, logger *logrus.Logger) *ServerGRPC {
 }
 
 func (s *ServerGRPC) Start(ctx context.Context) error {
-	list, err := net.Listen("tcp", fmt.Sprintf(":%d", s.port))
+	addres := s.config.Address()
+	list, err := net.Listen("tcp", addres)
 	if err != nil {
-		return fmt.Errorf("failed to listen port %d: %v", s.port, err)
+		return fmt.Errorf("failed to listen addres %s: %v", addres, err)
 	}
 	go func() {
-		s.logger.Infof("server is listening the port %d", s.port)
+		s.logger.Infof("server is listening the addres %s", addres)
 		err = s.grpcServer.Serve(list)
 		if err != nil {
-			s.logger.WithError(err).Fatalf("fail to serve the server on the port %d", s.port)
+			s.logger.WithError(err).Fatalf("fail to serve the server on the addres %s", addres)
 		}
 	}()
 
@@ -81,7 +79,7 @@ func (s *ServerGRPC) Stop(ctx context.Context) error {
 }
 
 func (s *ServerGRPC) Configure(ctx context.Context, config Config) error {
-	s.port = config.Port
+	s.config = config
 
 	return nil
 }
