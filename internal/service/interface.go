@@ -16,9 +16,19 @@ type RoleService interface {
 	LoginService
 }
 
-type MicroServices interface {
-	RoleService
-}
+//type internalServices struct {
+//	LoginService
+//}
+//
+//func NewInternalServices[com any](coms ...com) *internalServices {
+//	return &internalServices{}
+//}
+
+//type InternalServices interface {
+//	RoleService
+//}
+
+//type Global
 
 //type GlobalService interface {
 //	GetRoleServiceMethods() RoleService
