@@ -29,11 +29,11 @@ import (
 //	}, nil
 //}
 
-func (r *roleService) NewRequest() *model.LoginRequest {
+func (r *roleService) NewLoginRequest() *model.LoginRequest {
 	return &model.LoginRequest{}
 }
 
-func (r *roleService) Login(ctx context.Context, service *model.LoginRequest) (*model.LoginResponse, error) {
+func (r *roleService) Login(ctx context.Context, request *model.LoginRequest) (*model.LoginResponse, error) {
 	return &model.LoginResponse{
 		SessionID: "TEST228",
 	}, nil
