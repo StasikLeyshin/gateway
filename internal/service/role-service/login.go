@@ -34,6 +34,7 @@ func (r *roleService) NewLoginRequest() *model.LoginRequest {
 }
 
 func (r *roleService) Login(ctx context.Context, request *model.LoginRequest) (*model.LoginResponse, error) {
+	//r.internalService.
 	return &model.LoginResponse{
 		SessionID: "TEST228",
 	}, nil

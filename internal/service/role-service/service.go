@@ -1,13 +1,13 @@
 package role_service
 
-import "gateway/internal/service/service"
+import "gateway/internal/service"
 
 type roleService struct {
-	service *service.GlobalService
+	internalService service.InternalService
 }
 
-func NewRoleService(service *service.GlobalService) *roleService {
+func NewRoleService(internalService service.InternalService) *roleService {
 	return &roleService{
-		service: service,
+		internalService: internalService,
 	}
 }
