@@ -3,6 +3,7 @@ package service
 import (
 	"context"
 	"gateway/internal/service/role-service/model"
+	"gateway/internal/transfer"
 )
 
 type (
@@ -14,6 +15,11 @@ type (
 
 type RoleService interface {
 	LoginService
+}
+
+type InternalService interface {
+	//GetExternalServices() ExternalServices
+	GetTransfer() transfer.Transfer
 }
 
 //type internalServices struct {

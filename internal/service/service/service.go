@@ -5,19 +5,24 @@ import (
 	"gateway/internal/transfer"
 )
 
-type internalServices struct {
+type InternalGrpcServices struct {
 	roleService service.RoleService
 }
 
-type GlobalService struct {
-	internalServices internalServices
-	transfer         transfer.Transfer
+type internalService struct {
+	internalGrpcServices InternalGrpcServices
+	transfer             transfer.Transfer
 }
 
-func NewGlobalService(transfer transfer.Transfer) *GlobalService {
-	return &GlobalService{
-		transfer: transfer,
+func NewInternalService(internalGrpcServices InternalGrpcServices, transfer transfer.Transfer) *internalService {
+	return &internalService{
+		internalGrpcServices: internalGrpcServices,
+		transfer:             transfer,
 	}
+}
+
+func (g *internalService) GetTransfer() transfer.Transfer {
+	return g.transfer
 }
 
 //func (g *GlobalService) GetServer(ctx context.Context) error {
