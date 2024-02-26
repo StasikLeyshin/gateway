@@ -7,6 +7,7 @@ github.com/StasikLeyshin/libs-proto/grpc/manage-server-service v0.0.1/go.mod h1:
 github.com/StasikLeyshin/libs-proto/grpc/manage-server-service v0.0.4/go.mod h1:YeMtS8VE2w3bZk0r4P11Z4jAGIK1Lyrjok4r2278JF0=
 github.com/StasikLeyshin/libs-proto/grpc/manage-server-service v0.0.7/go.mod h1:YeMtS8VE2w3bZk0r4P11Z4jAGIK1Lyrjok4r2278JF0=
 github.com/StasikLeyshin/libs-proto/grpc/manage-server-service v0.0.8/go.mod h1:YeMtS8VE2w3bZk0r4P11Z4jAGIK1Lyrjok4r2278JF0=
+github.com/StasikLeyshin/libs-proto/grpc/manage-server-service v0.0.10/go.mod h1:YeMtS8VE2w3bZk0r4P11Z4jAGIK1Lyrjok4r2278JF0=
 github.com/creack/pty v1.1.9/go.mod h1:oKZEueFk5CKHvIhNR5MUki03XCEU+Q6VDXinZuGJ33E=
 github.com/davecgh/go-spew v1.1.0/go.mod h1:J7Y8YcW2NihsgmVo/mv3lAwl/skON4iLHjSsI+c5H38=
 github.com/davecgh/go-spew v1.1.1 h1:vj9j/u1bqnvCEfJOwUhtlOARqs3+rkHYY13jYWTU97c=

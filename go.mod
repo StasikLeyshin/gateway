@@ -12,7 +12,7 @@ require (
 	gopkg.in/yaml.v3 v3.0.1
 )
 
-require github.com/StasikLeyshin/libs-proto/grpc/manage-server-service v0.0.8 // indirect
+require github.com/StasikLeyshin/libs-proto/grpc/manage-server-service v0.0.10
 
 require (
 	github.com/golang/protobuf v1.5.3 // indirect; indirec
