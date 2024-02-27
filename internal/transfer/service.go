@@ -14,6 +14,7 @@ type Transfer interface {
 }
 
 type transfer struct {
+	role RoleService
 }
 
 func NewTransfer() *transfer {
