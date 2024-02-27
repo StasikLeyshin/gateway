@@ -8,7 +8,7 @@ import (
 type transferManageServerService struct {
 }
 
-func NewTransferRoleService() *transferManageServerService {
+func NewManageServerService() *transferManageServerService {
 	return &transferManageServerService{}
 }
 
