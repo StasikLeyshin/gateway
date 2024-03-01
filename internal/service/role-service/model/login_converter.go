@@ -1,19 +1,13 @@
 package model
 
-import desc "github.com/StasikLeyshin/libs-proto/grpc-gateway/role-service/pb"
+import (
+	descExternal "github.com/StasikLeyshin/libs-proto/grpc-gateway/role-service/pb"
+)
 
-func (convert *LoginRequest) FromService(value *desc.LoginRequest) *desc.LoginRequest {
+func (convert *LoginRequest) ToService(value *descExternal.LoginRequest) *LoginRequest {
 	return nil
 }
 
-func (convert *LoginRequest) ToService(value *desc.LoginRequest) *LoginRequest {
-	return nil
-}
-
-func (convert *LoginResponse) FromService(value *desc.LoginResponse) *desc.LoginResponse {
-	return nil
-}
-
-func (convert *LoginResponse) ToService(value *desc.LoginResponse) *LoginResponse {
+func (convert *LoginResponse) ToService(value *descExternal.LoginResponse) *LoginResponse {
 	return nil
 }
