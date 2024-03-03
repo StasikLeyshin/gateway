@@ -60,6 +60,7 @@ func (s *serviceProvider) Transfer() transfer.Transfer {
 func (s *serviceProvider) GlobalService() *service.GlobalService {
 	if s.service == nil {
 		s.service = service.NewInternalService(
+			nil
 			s.Transfer(),
 		)
 	}
