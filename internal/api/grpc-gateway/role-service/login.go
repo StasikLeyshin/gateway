@@ -13,7 +13,7 @@ func (i *RoleService) Login(ctx context.Context, request *desc.LoginRequest) (*d
 		return nil, status.Errorf(codes.Internal, "Internal error")
 	}
 
-	response, _ := api.CallService(ctx, request, i.service.Login, new(desc.LoginResponse), i.service.NewRequest())
+	response, _ := api.CallService(ctx, request, i.service.Login, new(desc.LoginResponse)) //, i.service.NewRequest())
 
 	return response, nil
 	//i.service.Do()
