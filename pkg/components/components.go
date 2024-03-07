@@ -42,6 +42,18 @@ type (
 	Components[Config any] struct {
 		components []*Component[Config]
 	}
+
+	trieNode[Config any] struct {
+		children      []*trieNode[Config]
+		control       Control[Config]
+		configuration ComponentFunc[Config]
+		name          string
+		status        Status
+	}
+
+	trie[Config any] struct {
+		root *trieNode[Config]
+	}
 )
 
 func NewComponents[Config any]() *Components[Config] {
