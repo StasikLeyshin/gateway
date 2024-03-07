@@ -14,6 +14,8 @@ require (
 
 require github.com/StasikLeyshin/libs-proto/grpc/manage-server-service v0.0.10
 
+require github.com/matoous/go-nanoid/v2 v2.0.0 // indirect
+
 require (
 	github.com/golang/protobuf v1.5.3 // indirect; indirec
 	github.com/kr/text v0.2.0 // indirect
