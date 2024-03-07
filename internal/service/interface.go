@@ -7,14 +7,13 @@ import (
 )
 
 type (
-	LoginService interface {
+	LoginSubService interface {
 		Login(ctx context.Context, request *model.LoginRequest) (*model.LoginResponse, error)
-		NewRequest() *model.LoginRequest
 	}
 )
 
 type RoleService interface {
-	LoginService
+	LoginSubService
 }
 
 type InternalService interface {
