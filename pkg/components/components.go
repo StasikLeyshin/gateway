@@ -56,6 +56,14 @@ type (
 	}
 )
 
+func (t *trie[Config]) Add(configurator Control[Config], configuration ComponentFunc[Config], name string) {
+	current := t.root
+	for _, node := range t.root.children {
+		index := word[i] - 'a'
+		current = current.children[index]
+	}
+}
+
 func NewComponents[Config any]() *Components[Config] {
 	return &Components[Config]{}
 }
@@ -130,6 +138,21 @@ func AddComponent[
 	Conf Configurator[SubConfig],
 ](
 	components *Components[Config],
+	configurator Conf,
+	adapter ConfigAdapter[Config, SubConfig],
+	name string,
+) {
+	components.Add(configurator, func(ctx context.Context, config Config) error {
+		return configurator.Configure(ctx, adapter(config))
+	}, name)
+}
+
+func AddComponent1[
+	Config any,
+	SubConfig any,
+	Conf Configurator[SubConfig],
+](
+	components *trie[Config],
 	configurator Conf,
 	adapter ConfigAdapter[Config, SubConfig],
 	name string,
