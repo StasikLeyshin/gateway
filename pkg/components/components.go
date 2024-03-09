@@ -56,12 +56,23 @@ type (
 	}
 )
 
-func (t *trie[Config]) Add(configurator Control[Config], configuration ComponentFunc[Config], name string) {
-	current := t.root
-	for _, node := range t.root.children {
-		index := word[i] - 'a'
-		current = current.children[index]
-	}
+func (t *trieNode[Config]) Insert() {
+
+}
+
+func (t *trie[Config]) Add(
+	configurator Control[Config],
+	configuration ComponentFunc[Config],
+	parent trieNode[Config],
+	name string,
+) {
+	if t.root.
+	//current := t.root
+	//for _, node := range t.root.children {
+	//	if
+	//	//index := 1
+	//	//current = current.children[index]
+	//}
 }
 
 func NewComponents[Config any]() *Components[Config] {
@@ -82,9 +93,9 @@ func (c *Components[Config]) Add(configurator Control[Config], configuration Com
 func (c *Components[Config]) actionError(component *Component[Config], text string, err error) error {
 	return fmt.Errorf("component name: %s | description: %s | error: %v", component.name, text, err)
 }
-
+т
 func (c *Components[Config]) checkStatus(component *Component[Config], status Status) error {
-	if component.status != status {
+	if component.statu s != status {
 		component.status = status
 	} else {
 		return c.actionError(component, ComponentError[status], nil)
