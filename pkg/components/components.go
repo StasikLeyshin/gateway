@@ -93,9 +93,9 @@ func (c *Components[Config]) Add(configurator Control[Config], configuration Com
 func (c *Components[Config]) actionError(component *Component[Config], text string, err error) error {
 	return fmt.Errorf("component name: %s | description: %s | error: %v", component.name, text, err)
 }
-т
+
 func (c *Components[Config]) checkStatus(component *Component[Config], status Status) error {
-	if component.statu s != status {
+	if component.status != status {
 		component.status = status
 	} else {
 		return c.actionError(component, ComponentError[status], nil)
