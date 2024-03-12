@@ -137,7 +137,6 @@ func (c *Components[Config]) Configure(ctx context.Context, config Config) error
 			return c.actionError(component, "component configuration error", err)
 			//errors = append(errors, c.actionError(component, "component configuration error", err))
 		} else {
-			//errors = append(errors, c.checkStatus(component, Stopped))
 		}
 	}
 	return nil
