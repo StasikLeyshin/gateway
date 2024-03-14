@@ -168,6 +168,7 @@ func AddComponent1[
 	adapter ConfigAdapter[Config, SubConfig],
 	name string,
 ) {
+
 	components.Add(configurator, func(ctx context.Context, config Config) error {
 		return configurator.Configure(ctx, adapter(config))
 	}, name)
