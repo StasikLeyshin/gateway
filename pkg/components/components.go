@@ -56,8 +56,21 @@ type (
 	}
 )
 
-func (t *trieNode[Config]) Insert() {
-
+func (t *trieNode[Config]) Insert(
+	configurator Control[Config],
+	configuration ComponentFunc[Config],
+	parent trieNode[Config],
+	name string,
+) {
+	if t.name == parent.name {
+		component := &trieNode[Config]{
+			control:       configurator,
+			configuration: configuration,
+			name:          name,
+			status:        Stopped,
+		}
+		t.children = append(t.children, component)
+	}
 }
 
 func (t *trie[Config]) Add(
@@ -66,7 +79,10 @@ func (t *trie[Config]) Add(
 	parent trieNode[Config],
 	name string,
 ) {
-	if t.root.
+	t.root.Insert(configurator, configuration, parent, name)
+	//if t.root.name == name {
+	//
+	//}
 	//current := t.root
 	//for _, node := range t.root.children {
 	//	if
