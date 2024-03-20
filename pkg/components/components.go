@@ -61,7 +61,7 @@ func (t *trieNode[Config]) Insert(
 	configuration ComponentFunc[Config],
 	parent trieNode[Config],
 	name string,
-) {
+) *trieNode[Config] {
 	if t.name == parent.name {
 		component := &trieNode[Config]{
 			control:       configurator,
@@ -70,6 +70,7 @@ func (t *trieNode[Config]) Insert(
 			status:        Stopped,
 		}
 		t.children = append(t.children, component)
+		return component
 	}
 }
 
