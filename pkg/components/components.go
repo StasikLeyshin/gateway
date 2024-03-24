@@ -175,18 +175,18 @@ func AddComponent[
 	}, name)
 }
 
-func AddComponent1[
-	Config any,
-	SubConfig any,
-	Conf Configurator[SubConfig],
-](
-	components *trie[Config],
-	configurator Conf,
-	adapter ConfigAdapter[Config, SubConfig],
-	name string,
-) {
-
-	components.Add(configurator, func(ctx context.Context, config Config) error {
-		return configurator.Configure(ctx, adapter(config))
-	}, name)
-}
+//func AddComponent1[
+//	Config any,
+//	SubConfig any,
+//	Conf Configurator[SubConfig],
+//](
+//	components *trie[Config],
+//	configurator Conf,
+//	adapter ConfigAdapter[Config, SubConfig],
+//	name string,
+//) {
+//
+//	components.Add(configurator, func(ctx context.Context, config Config) error {
+//		return configurator.Configure(ctx, adapter(config))
+//	}, name)
+//}
