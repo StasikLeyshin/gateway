@@ -42,55 +42,7 @@ type (
 	Components[Config any] struct {
 		components []*Component[Config]
 	}
-
-	trieNode[Config any] struct {
-		children      []*trieNode[Config]
-		control       Control[Config]
-		configuration ComponentFunc[Config]
-		name          string
-		status        Status
-	}
-
-	trie[Config any] struct {
-		root *trieNode[Config]
-	}
 )
-
-func (t *trieNode[Config]) Insert(
-	configurator Control[Config],
-	configuration ComponentFunc[Config],
-	parent trieNode[Config],
-	name string,
-) *trieNode[Config] {
-	if t.name == parent.name {
-		component := &trieNode[Config]{
-			control:       configurator,
-			configuration: configuration,
-			name:          name,
-			status:        Stopped,
-		}
-		t.children = append(t.children, component)
-		return component
-	}
-}
-
-func (t *trie[Config]) Add(
-	configurator Control[Config],
-	configuration ComponentFunc[Config],
-	parent trieNode[Config],
-	name string,
-) {
-	t.root.Insert(configurator, configuration, parent, name)
-	//if t.root.name == name {
-	//
-	//}
-	//current := t.root
-	//for _, node := range t.root.children {
-	//	if
-	//	//index := 1
-	//	//current = current.children[index]
-	//}
-}
 
 func NewComponents[Config any]() *Components[Config] {
 	return &Components[Config]{}
@@ -174,19 +126,3 @@ func AddComponent[
 		return configurator.Configure(ctx, adapter(config))
 	}, name)
 }
-
-//func AddComponent1[
-//	Config any,
-//	SubConfig any,
-//	Conf Configurator[SubConfig],
-//](
-//	components *trie[Config],
-//	configurator Conf,
-//	adapter ConfigAdapter[Config, SubConfig],
-//	name string,
-//) {
-//
-//	components.Add(configurator, func(ctx context.Context, config Config) error {
-//		return configurator.Configure(ctx, adapter(config))
-//	}, name)
-//}
