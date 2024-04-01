@@ -13,6 +13,7 @@ require (
 )
 
 require github.com/StasikLeyshin/libs-proto/grpc/manage-server-service v0.0.10
+require github.com/StasikLeyshin/libs-proto/grpc/role-service v0.0.0
 
 require github.com/matoous/go-nanoid/v2 v2.0.0 // indirect
 
