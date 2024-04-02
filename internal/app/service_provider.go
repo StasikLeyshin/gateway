@@ -69,7 +69,6 @@ func (s *serviceProvider) GlobalService() *service.GlobalService {
 }
 
 func (s *serviceProvider) RoleServiceImpl() *roleServiceGRPC.RoleService {
-
 	return roleServiceGRPC.NewImplementationRoleService(roleService.NewRoleService(s.GlobalService()))
 }
 
