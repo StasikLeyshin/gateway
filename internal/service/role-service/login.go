@@ -29,12 +29,13 @@ import (
 //	}, nil
 //}
 
-func (r *roleService) NewLoginRequest() *model.LoginRequest {
-	return &model.LoginRequest{}
-}
+//func (r *roleService) NewLoginRequest() *model.LoginRequest {
+//	return &model.LoginRequest{}
+//}
 
 func (r *roleService) Login(ctx context.Context, request *model.LoginRequest) (*model.LoginResponse, error) {
 	//r.internalService.
+	r.internalService.GetTransfer().Login(ctx, request.FromService(request))
 	return &model.LoginResponse{
 		SessionID: "TEST228",
 	}, nil
