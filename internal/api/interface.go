@@ -19,7 +19,7 @@ func CallService[
 	// ServiceResponse fromServiceToApi[GrpcResponse, GrpcResponse],
 	// ServiceRequest toServiceFromApi[GrpcRequest, ServiceRequest],
 	ServiceResponse interface {
-		FromService(value GrpcResponse) GrpcResponse
+		FromService() GrpcResponse
 	},
 	ServiceRequest interface {
 		ToService(value GrpcRequest) ServiceRequest
@@ -41,7 +41,7 @@ func CallService[
 		return *new(GrpcResponse), nil //, HandleAppError(err)
 	}
 
-	resp = serviceResponse.FromService(resp)
+	resp = serviceResponse.FromService()
 
 	return resp, nil
 }
