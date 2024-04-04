@@ -2,13 +2,14 @@ package service
 
 import (
 	"context"
+	role_service "gateway/internal/service/role-service"
 	"gateway/internal/service/role-service/model"
 	"gateway/internal/transfer"
 )
 
 type (
 	LoginSubService interface {
-		Login(ctx context.Context, request *model.LoginRequest) (*model.LoginResponse, error)
+		Login(ctx context.Context, request *model.LoginRequest, c InternalService) (*model.LoginResponse, error)
 	}
 )
 
@@ -21,9 +22,10 @@ type InternalService interface {
 	GetTransfer() transfer.Transfer
 }
 
-//type internalServices struct {
-//	LoginService
-//}
+type internalServices struct {
+	role_service.roleService
+}
+
 //
 //func NewInternalServices[com any](coms ...com) *internalServices {
 //	return &internalServices{}
