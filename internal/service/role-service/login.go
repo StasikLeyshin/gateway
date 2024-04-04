@@ -2,6 +2,7 @@ package role_service
 
 import (
 	"context"
+	"gateway/internal/service"
 	"gateway/internal/service/role-service/model"
 )
 
@@ -33,9 +34,10 @@ import (
 //	return &model.LoginRequest{}
 //}
 
-func (r *roleService) Login(ctx context.Context, request *model.LoginRequest) (*model.LoginResponse, error) {
+func (r *roleService) Login(ctx context.Context, request *model.LoginRequest, c service.InternalService) (*model.LoginResponse, error) {
 	//r.internalService.
-	r.internalService.GetTransfer().Login(ctx, request.FromService())
+	//r.internalService.GetTransfer().Login(ctx, request.FromService())
+	c.GetTransfer().Login(ctx, request.FromService())
 	return &model.LoginResponse{
 		SessionID: "TEST228",
 	}, nil
