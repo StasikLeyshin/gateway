@@ -22,7 +22,7 @@ type serviceProvider struct {
 
 	components *components.Components[*configuration.Config]
 
-	config  *configuration.Config
+	config  *co nfiguration.Config
 	service *service.GlobalService
 
 	grpcServer *grpc.Server
