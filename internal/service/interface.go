@@ -36,15 +36,15 @@ type InternalService interface {
 
 //type Global
 
-type GlobalService interface {
-	GetRoleServiceMethods() RoleService
-}
+//type GlobalService interface {
+//	GetRoleServiceMethods() RoleService
+//}
 
-type microServices struct {
-	role_service.RoleService
-}
-
-func re() {
-	microServices1 := microServices{}
-	microServices1.Login()
-}
+//type microServices struct {
+//	role_service.RoleService
+//}
+//
+//func re() {
+//	microServices1 := microServices{}
+//	microServices1.Login()
+//}
