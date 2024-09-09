@@ -1,4 +1,4 @@
-package role_service
+package role
 
 import (
 	"context"
@@ -8,7 +8,7 @@ import (
 	"google.golang.org/grpc/status"
 )
 
-func (i *RoleService) Login(ctx context.Context, request *desc.LoginRequest) (*desc.LoginResponse, error) {
+func (i *Implementation) Login(ctx context.Context, request *desc.LoginRequest) (*desc.LoginResponse, error) {
 	if request == nil {
 		return nil, status.Errorf(codes.Internal, "Internal error")
 	}

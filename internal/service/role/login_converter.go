@@ -1,4 +1,4 @@
-package role_service
+package role
 
 //import desc "github.com/StasikLeyshin/libs-proto/grpc-gateway/role-service/pb"
 

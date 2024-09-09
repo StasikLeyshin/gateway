@@ -2,8 +2,8 @@ package service
 
 import (
 	"context"
-	role_service "gateway/internal/service/role-service"
-	"gateway/internal/service/role-service/model"
+	role_service "gateway/internal/service/role"
+	"gateway/internal/service/role/model"
 	"gateway/internal/transfer"
 )
 

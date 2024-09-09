@@ -7,7 +7,7 @@ import (
 	"syscall"
 )
 
-type App struct {
+type Application struct {
 	serviceProvider *serviceProvider
 	logger          *logrus.Logger
 	//components      []component
@@ -19,8 +19,8 @@ type component interface {
 	Stop(ctx context.Context) error
 }
 
-func NewApp(ctx context.Context, configPath string, logger *logrus.Logger) (*App, error) {
-	app := &App{
+func NewApp(ctx context.Context, configPath string, logger *logrus.Logger) (*Application, error) {
+	app := &Application{
 		configPath: configPath,
 		logger:     logger,
 	}
@@ -33,7 +33,7 @@ func NewApp(ctx context.Context, configPath string, logger *logrus.Logger) (*App
 	return app, nil
 }
 
-func (a *App) initDeps(ctx context.Context) error {
+func (a *Application) initDeps(ctx context.Context) error {
 	inits := []func(context.Context) error{
 		a.initServiceProvider,
 		a.initConfig,
@@ -52,12 +52,12 @@ func (a *App) initDeps(ctx context.Context) error {
 	return nil
 }
 
-func (a *App) initServiceProvider(_ context.Context) error {
+func (a *Application) initServiceProvider(_ context.Context) error {
 	a.serviceProvider = newServiceProvider(a.logger)
 	return nil
 }
 
-func (a *App) initConfig(_ context.Context) error {
+func (a *Application) initConfig(_ context.Context) error {
 	err := a.serviceProvider.initConfig(a.configPath)
 	if err != nil {
 		return err
@@ -65,19 +65,19 @@ func (a *App) initConfig(_ context.Context) error {
 	return nil
 }
 
-func (a *App) initGRPCServer(_ context.Context) error {
+func (a *Application) initGRPCServer(_ context.Context) error {
 	a.serviceProvider.initGRPCServer()
 
 	return nil
 }
 
-func (a *App) initComponents(_ context.Context) error {
+func (a *Application) initComponents(_ context.Context) error {
 	a.serviceProvider.initComponents()
 
 	return nil
 }
 
-func (a *App) addComponents(_ context.Context) error {
+func (a *Application) addComponents(_ context.Context) error {
 	err := a.serviceProvider.addComponents()
 	if err != nil {
 		return err
@@ -86,7 +86,7 @@ func (a *App) addComponents(_ context.Context) error {
 	return nil
 }
 
-func (a *App) Run1(ctx context.Context) {
+func (a *Application) Run1(ctx context.Context) {
 	componentsCtx, componentsStopCtx := signal.NotifyContext(ctx, syscall.SIGHUP,
 		syscall.SIGINT, syscall.SIGTERM, syscall.SIGQUIT)
 	defer componentsStopCtx()

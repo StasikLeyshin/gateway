@@ -9,19 +9,19 @@ type InternalGrpcServices struct {
 	roleService service.RoleService
 }
 
-type internalService struct {
+type InternalService struct {
 	internalGrpcServices InternalGrpcServices
 	transfer             transfer.Transfer
 }
 
-func NewInternalService(internalGrpcServices InternalGrpcServices, transfer transfer.Transfer) *internalService {
-	return &internalService{
+func NewInternalService(internalGrpcServices InternalGrpcServices, transfer transfer.Transfer) *InternalService {
+	return &InternalService{
 		internalGrpcServices: internalGrpcServices,
 		transfer:             transfer,
 	}
 }
 
-func (g *internalService) GetTransfer() transfer.Transfer {
+func (g *InternalService) GetTransfer() transfer.Transfer {
 	return g.transfer
 }
 
