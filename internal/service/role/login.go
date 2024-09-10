@@ -2,7 +2,7 @@ package role
 
 import (
 	"context"
-	"gateway/internal/service/role-service/model"
+	"gateway/internal/service/role/model"
 )
 
 //type (
