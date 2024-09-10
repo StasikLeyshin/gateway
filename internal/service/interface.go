@@ -2,7 +2,6 @@ package service
 
 import (
 	"context"
-	role_service "gateway/internal/service/role"
 	"gateway/internal/service/role/model"
 	"gateway/internal/transfer"
 )
@@ -22,9 +21,9 @@ type InternalService interface {
 	GetTransfer() transfer.Transfer
 }
 
-type internalServices struct {
-	role_service.roleService
-}
+//type internalServices struct {
+//	role_service.roleService
+//}
 
 //
 //func NewInternalServices[com any](coms ...com) *internalServices {

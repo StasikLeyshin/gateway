@@ -1,4 +1,4 @@
-package role_service
+package role
 
 import (
 	"context"

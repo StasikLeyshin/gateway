@@ -9,16 +9,25 @@ type InternalGrpcServices struct {
 	roleService service.RoleService
 }
 
+type AppCallbacks struct {
+	RoleService service.RoleService
+}
+
 type InternalService struct {
 	internalGrpcServices InternalGrpcServices
 	transfer             transfer.Transfer
+	appCallbacks         *AppCallbacks
 }
 
-func NewInternalService(internalGrpcServices InternalGrpcServices, transfer transfer.Transfer) *InternalService {
+func NewInternalService(transfer transfer.Transfer) *InternalService {
 	return &InternalService{
-		internalGrpcServices: internalGrpcServices,
-		transfer:             transfer,
+		//internalGrpcServices: internalGrpcServices,
+		transfer: transfer,
 	}
+}
+
+func (g *InternalService) Inject(appCallbacks *AppCallbacks) {
+	g.appCallbacks = appCallbacks
 }
 
 func (g *InternalService) GetTransfer() transfer.Transfer {
