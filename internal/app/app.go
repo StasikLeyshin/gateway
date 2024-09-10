@@ -91,6 +91,8 @@ func (a *Application) Run1(ctx context.Context) {
 		syscall.SIGINT, syscall.SIGTERM, syscall.SIGQUIT)
 	defer componentsStopCtx()
 
+	a.serviceProvider.InjectCallbacks()
+
 	a.serviceProvider.components.Start(ctx)
 
 	<-componentsCtx.Done()
