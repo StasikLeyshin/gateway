@@ -61,12 +61,6 @@ func (s *serviceProvider) initConfig(configPath string) error {
 //	return s.transfer
 //}
 
-func (s *serviceProvider) InjectCallbacks() {
-	s.service.Inject(&service.AppCallbacks{
-		RoleService: s.role,
-	})
-}
-
 func (s *serviceProvider) GlobalService() *service.InternalService {
 	if s.service == nil {
 		s.service = service.NewInternalService(
@@ -126,4 +120,10 @@ func (s *serviceProvider) Stop(ctx context.Context) error {
 	s.components.Stop(ctx)
 
 	return nil
+}
+
+func (s *serviceProvider) InjectCallbacks() {
+	s.service.Inject(&service.AppCallbacks{
+		RoleService: s.role,
+	})
 }
