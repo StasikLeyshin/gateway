@@ -6,7 +6,6 @@ import (
 	"gateway/internal/app/configuration"
 	server "gateway/internal/server/grpc"
 	serviceInterface "gateway/internal/service"
-	roleService1 "gateway/internal/service/role"
 	"gateway/internal/service/service"
 	"gateway/internal/transfer"
 	"gateway/pkg/components"
@@ -25,13 +24,15 @@ type serviceProvider struct {
 
 	config *configuration.Config
 	//service *service.GlobalService
-	service *service.InternalService
+	service *service.Service
 
 	grpcServer *grpc.Server
 
 	transfer transfer.Transfer
 
 	role serviceInterface.RoleService
+
+	roleImpl *roleServiceGRPC.Implementation
 }
 
 func newServiceProvider(logger *logrus.Logger) *serviceProvider {
@@ -61,20 +62,31 @@ func (s *serviceProvider) initConfig(configPath string) error {
 //	return s.transfer
 //}
 
-func (s *serviceProvider) GlobalService() *service.InternalService {
-	if s.service == nil {
-		s.service = service.NewInternalService(
-			nil,
-		)
-	}
+//func (s *serviceProvider) GlobalService() *service.InternalService {
+//	if s.service == nil {
+//		s.service = service.NewInternalService(
+//			nil,
+//		)
+//	}
+//
+//	return s.service
+//}
+//
+//func (s *serviceProvider) RoleService() serviceInterface.RoleService {
+//	if s.role == nil {
+//		roleService1.NewRoleService(s.GlobalService())
+//	}
+//
+//	return s.role
+//}
 
-	return s.service
-}
-
-func (s *serviceProvider) RoleImpl() *roleServiceGRPC.Implementation {
-	s.role = roleService1.NewRoleService(s.GlobalService())
-	return roleServiceGRPC.NewImplementation(s.role)
-}
+//func (s *serviceProvider) RoleImpl() *roleServiceGRPC.Implementation {
+//	if s.roleImpl == nil {
+//		s.roleImpl = roleServiceGRPC.NewImplementation(s.role)
+//	}
+//
+//	return s.roleImpl
+//}
 
 func (s *serviceProvider) Registration(reg grpc.ServiceRegistrar) {
 	desc.RegisterRoleServiceServer(reg, s.RoleImpl())

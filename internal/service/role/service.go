@@ -6,12 +6,11 @@ import serviceCore "gateway/internal/service/service"
 var _ service.RoleService = (*roleService)(nil)
 
 type roleService struct {
-	internalService *serviceCore.InternalService
-	serv            serviceCore.InternalService
+	service *serviceCore.Service
 }
 
-func NewRoleService(internalService *serviceCore.InternalService) *roleService {
+func NewRoleService(service *serviceCore.Service) *roleService {
 	return &roleService{
-		internalService: internalService,
+		service: service,
 	}
 }

@@ -5,16 +5,16 @@ import (
 	desc "github.com/StasikLeyshin/libs-proto/grpc-gateway/role-service/pb"
 )
 
-type RoleService interface {
+type RoleTransfer interface {
 	Login(ctx context.Context, request *desc.LoginRequest) (*desc.LoginResponse, error)
 }
 
 type Transfer interface {
-	RoleService
+	RoleTransfer
 }
 
 type transfer struct {
-	role RoleService
+	role RoleTransfer
 }
 
 func NewTransfer() *transfer {

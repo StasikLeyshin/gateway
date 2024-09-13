@@ -1,8 +1,10 @@
-package role
+package model
 
-import descInternal "github.com/StasikLeyshin/libs-proto/grpc/role-service/pb"
+import (
+	descInternal "github.com/StasikLeyshin/libs-proto/grpc/role-service/pb"
+)
 
-func (convert *LoginRequest) FromTransfer(value *descInternal.LoginRequest) *descInternal.LoginRequest {
+func (convert *LoginRequest) FromTransfer() *descInternal.LoginRequest {
 	return nil
 }
 
