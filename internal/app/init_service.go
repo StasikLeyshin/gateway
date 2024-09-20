@@ -18,7 +18,7 @@ func (s *serviceProvider) Service() *service.Service {
 
 func (s *serviceProvider) RoleService() serviceInterface.RoleService {
 	if s.role == nil {
-		roleService.NewRoleService(s.Service())
+		s.role = roleService.NewRoleService(s.Service())
 	}
 
 	return s.role
