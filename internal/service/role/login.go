@@ -35,7 +35,7 @@ import (
 
 func (r *roleService) Login(ctx context.Context, request *model.LoginRequest) (*model.LoginResponse, error) {
 	//r.internalService.
-	r.service.GetTransfer().Login(ctx, request.FromService())
+	r.service.Transfer.Login(ctx, request.FromService())
 	//c.GetTransfer().Login(ctx, request.FromService())
 	return &model.LoginResponse{
 		SessionID: "TEST228",

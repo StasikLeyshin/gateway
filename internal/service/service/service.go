@@ -15,14 +15,14 @@ type AppCallbacks struct {
 
 type Service struct {
 	internalGrpcServices InternalGrpcServices
-	transfer             transfer.Transfer
+	Transfer             transfer.Transfer
 	appCallbacks         *AppCallbacks
 }
 
 func NewService(transfer transfer.Transfer) *Service {
 	return &Service{
 		//internalGrpcServices: internalGrpcServices,
-		transfer: transfer,
+		Transfer: transfer,
 	}
 }
 
@@ -31,7 +31,7 @@ func (g *Service) Inject(appCallbacks *AppCallbacks) {
 }
 
 func (g *Service) GetTransfer() transfer.Transfer {
-	return g.transfer
+	return g.Transfer
 }
 
 //func (g *GlobalService) GetServer(ctx context.Context) error {
