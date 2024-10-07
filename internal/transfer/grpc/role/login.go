@@ -47,7 +47,7 @@ func (c *HTTPClient) AddHostAddress(address url.URL) (url.URL, error) {
 	return address, nil
 }
 
-func (i *transferRoleService) Login(ctx context.Context, request *model.LoginRequest) (*model.LoginResponse, error) {
+func (i *roleTransfer) Login(ctx context.Context, request *model.LoginRequest) (*model.LoginResponse, error) {
 	NewClient(ctx, "").RoleServiceClient.Login(ctx, request.FromTransfer())
 	return nil, nil
 }

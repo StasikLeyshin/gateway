@@ -1,8 +1,8 @@
 package role
 
-type transferRoleService struct {
+type roleTransfer struct {
 }
 
-func NewTransferRoleService() *transferRoleService {
-	return &transferRoleService{}
+func NewTransferRole() *roleTransfer {
+	return &roleTransfer{}
 }
