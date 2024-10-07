@@ -7,7 +7,7 @@ import (
 	server "gateway/internal/server/grpc"
 	serviceInterface "gateway/internal/service"
 	"gateway/internal/service/service"
-	"gateway/internal/transfer"
+	"gateway/internal/transfer/transfer"
 	"gateway/pkg/components"
 	desc "github.com/StasikLeyshin/libs-proto/grpc-gateway/role-service/pb"
 	"github.com/sirupsen/logrus"
@@ -23,12 +23,12 @@ type serviceProvider struct {
 	components *components.Components[*configuration.Config]
 
 	config *configuration.Config
-	//service *service.GlobalService
+
 	service *service.Service
 
 	grpcServer *grpc.Server
 
-	transfer transfer.Transfer
+	transfer *transfer.Transfer
 
 	role serviceInterface.RoleService
 
@@ -60,32 +60,6 @@ func (s *serviceProvider) initConfig(configPath string) error {
 //	}
 //
 //	return s.transfer
-//}
-
-//func (s *serviceProvider) GlobalService() *service.InternalService {
-//	if s.service == nil {
-//		s.service = service.NewInternalService(
-//			nil,
-//		)
-//	}
-//
-//	return s.service
-//}
-//
-//func (s *serviceProvider) RoleService() serviceInterface.RoleService {
-//	if s.role == nil {
-//		roleService1.NewRoleService(s.GlobalService())
-//	}
-//
-//	return s.role
-//}
-
-//func (s *serviceProvider) RoleImpl() *roleServiceGRPC.Implementation {
-//	if s.roleImpl == nil {
-//		s.roleImpl = roleServiceGRPC.NewImplementation(s.role)
-//	}
-//
-//	return s.roleImpl
 //}
 
 func (s *serviceProvider) Registration(reg grpc.ServiceRegistrar) {

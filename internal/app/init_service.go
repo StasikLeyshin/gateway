@@ -9,12 +9,14 @@ import (
 func (s *serviceProvider) Service() *service.Service {
 	if s.service == nil {
 		s.service = service.NewService(
-			nil,
+			s.Transfer(),
 		)
 	}
 
 	return s.service
 }
+
+// RoleService
 
 func (s *serviceProvider) RoleService() serviceInterface.RoleService {
 	if s.role == nil {
