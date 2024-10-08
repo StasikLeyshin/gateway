@@ -1,16 +1,16 @@
 package transfer
 
 import (
-	"gateway/internal/transfer"
+	transfer1 "gateway/internal/transfer"
 	"gateway/internal/transfer/grpc/role"
 )
 
-type Transfer struct {
-	transfer.RoleTransfer
+type transfer struct {
+	transfer1.RoleTransfer
 }
 
-func NewTransfer() *Transfer {
-	return &Transfer{
+func NewTransfer() *transfer {
+	return &transfer{
 		role.NewTransferRole(),
 	}
 }
