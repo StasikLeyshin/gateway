@@ -7,7 +7,7 @@ import (
 	server "gateway/internal/server/grpc"
 	serviceInterface "gateway/internal/service"
 	"gateway/internal/service/service"
-	"gateway/internal/transfer/transfer"
+	"gateway/internal/transfer"
 	"gateway/pkg/components"
 	desc "github.com/StasikLeyshin/libs-proto/grpc-gateway/role-service/pb"
 	"github.com/sirupsen/logrus"
@@ -28,7 +28,7 @@ type serviceProvider struct {
 
 	grpcServer *grpc.Server
 
-	transfer *transfer.Transfer
+	transfer transfer.Transfer
 
 	role serviceInterface.RoleService
 
