@@ -15,6 +15,11 @@ type RoleService interface {
 	LoginSubService
 }
 
+type (
+	Connector interface {
+	}
+)
+
 //type InternalService interface {
 //	//GetExternalServices() ExternalServices
 //	GetTransfer() transfer.Transfer
