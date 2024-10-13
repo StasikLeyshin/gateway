@@ -7,10 +7,10 @@ import (
 
 type Implementation struct {
 	desc.UnimplementedManageServiceServer
-	serverService service.ServerService
+	serverService service.RoleService
 }
 
-func NewImplementation(serverService service.ServerService) *Implementation {
+func NewImplementation(serverService service.RoleService) *Implementation {
 	return &Implementation{
 		serverService: serverService,
 	}
