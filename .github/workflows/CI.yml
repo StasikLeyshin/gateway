@@ -21,10 +21,11 @@ jobs:
         run: go get ./...
       - name: Build
         run: go build -v ./cmd/...
-#      - name: Test with  theGo CLI
-#        run: go test ./...
+      - name: Test with  theGo CLI
+        run: go test ./...
 
   lint:
+    needs: build
     name: Lint
     runs-on: ubuntu-latest
     if: github.event_name == 'pull_request'
