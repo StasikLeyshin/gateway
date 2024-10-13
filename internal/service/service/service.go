@@ -17,12 +17,13 @@ type Service struct {
 	internalGrpcServices InternalGrpcServices
 	Transfer             transfer.Transfer
 	appCallbacks         *AppCallbacks
+	connector            transfer.Connector
 }
 
-func NewService(transfer transfer.Transfer) *Service {
+func NewService(transfer transfer.Transfer, connector transfer.Connector) *Service {
 	return &Service{
-		//internalGrpcServices: internalGrpcServices,
-		Transfer: transfer,
+		Transfer:  transfer,
+		connector: connector,
 	}
 }
 
@@ -33,17 +34,3 @@ func (g *Service) Inject(appCallbacks *AppCallbacks) {
 func (g *Service) GetTransfer() transfer.Transfer {
 	return g.Transfer
 }
-
-//func (g *GlobalService) GetServer(ctx context.Context) error {
-//	role_service.NewRoleService(g)
-//	return nil
-//}
-//
-//func (g *GlobalService) GetServer(ctx context.Context) error {
-//	role_service.NewRoleService(g)
-//	return nil
-//}
-//
-//func (g *GlobalService) Login(ctx context.Context, request *role_service.LoginRequest) (*role_service.LoginResponse, error) {
-//	return request.Do(ctx, g)
-//}

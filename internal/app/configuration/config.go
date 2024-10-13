@@ -3,18 +3,16 @@ package configuration
 import (
 	"fmt"
 	"gateway/internal/server/grpc"
+	"gateway/internal/transfer/connector"
 
-	//"github.com/StasikLeyshin/grpc-kafka-services/internal/server/grpc"
 	"gopkg.in/yaml.v3"
 	"os"
 )
 
 type Config struct {
-	Grpc        grpc.Config `yaml:"grpc"`
-	GrpcGateway grpc.Config `yaml:"grpc_gateway"`
-	//GrpcConfig GrpcConfig `yaml:"grpc"`
-	//KafkaConfig KafkaConfig    `yaml:"kafka"`
-	//Database    DatabaseConfig `yaml:"database"`
+	Grpc        grpc.Config      `yaml:"grpc"`
+	GrpcGateway grpc.Config      `yaml:"grpc_gateway"`
+	Connector   connector.Config `yaml:"route"`
 }
 
 func NewConfig(configPath string) (*Config, error) {
@@ -48,4 +46,8 @@ func (c *Config) GetGrpcConfig() grpc.Config {
 
 func (c *Config) GetGrpcGatewayConfig() grpc.Config {
 	return c.GrpcGateway
+}
+
+func (c *Config) GetConnectorConfig() *connector.Config {
+	return &c.Connector
 }

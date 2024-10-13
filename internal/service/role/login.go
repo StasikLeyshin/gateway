@@ -3,7 +3,6 @@ package role
 import (
 	"context"
 	"gateway/internal/service/role/model"
-	"gateway/internal/service/service"
 )
 
 //type (
@@ -36,9 +35,9 @@ import (
 
 func (r *roleService) Login(ctx context.Context, request *model.LoginRequest) (*model.LoginResponse, error) {
 	//r.internalService.
-	response, _ := r.service.Transfer.Login(ctx, request.FromService())
+	//response, _ := r.service.Transfer.Login(ctx, request.FromService())
 
-	response, _ := service.DoTransfer(ctx)
+	//response, _ := service.DoTransfer(ctx)
 	//c.GetTransfer().Login(ctx, request.FromService())
-	return new(model.LoginResponse).response, nil
+	return new(model.LoginResponse), nil
 }

@@ -98,18 +98,18 @@ func (c *Components[Config]) Stop(ctx context.Context) []error {
 	return errors
 }
 
-func (c *Components[Config]) Configure(ctx context.Context, config Config) error {
-	//errors := make([]error, len(c.components))
+func (c *Components[Config]) Configure(ctx context.Context, config Config) []error {
+	errors := make([]error, len(c.components))
 	for _, component := range c.components {
 		err := component.configuration(ctx, config)
 		if err != nil {
-			return c.actionError(component, "component configuration error", err)
-			//errors = append(errors, c.actionError(component, "component configuration error", err))
+			//return c.actionError(component, "component configuration error", err)
+			errors = append(errors, c.actionError(component, "component configuration error", err))
 		} else {
 			//errors = append(errors, c.checkStatus(component, Stopped))
 		}
 	}
-	return nil
+	return errors
 }
 
 func AddComponent[

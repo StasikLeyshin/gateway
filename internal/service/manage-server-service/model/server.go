@@ -18,7 +18,7 @@ type (
 		Port       *string
 	}
 
-	GetServerResponse struct {
+	GetServersResponse struct {
 		Servers []Server
 	}
 )

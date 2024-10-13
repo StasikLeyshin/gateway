@@ -8,8 +8,9 @@ import (
 	serviceInterface "gateway/internal/service"
 	"gateway/internal/service/service"
 	"gateway/internal/transfer"
+	"gateway/internal/transfer/connector"
 	"gateway/pkg/components"
-	desc "github.com/StasikLeyshin/libs-proto/grpc-gateway/role-service/pb"
+	desc "github.com/StasikLeyshin/libs-proto/grpc-gateway/role-service/grpc_gateway_pb"
 	"github.com/sirupsen/logrus"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/credentials/insecure"
@@ -33,6 +34,8 @@ type serviceProvider struct {
 	role serviceInterface.RoleService
 
 	roleImpl *roleServiceGRPC.Implementation
+
+	connector *connector.Connector
 }
 
 func newServiceProvider(logger *logrus.Logger) *serviceProvider {
@@ -53,14 +56,6 @@ func (s *serviceProvider) initConfig(configPath string) error {
 
 	return nil
 }
-
-//func (s *serviceProvider) Transfer() transfer.Transfer {
-//	if s.transfer == nil {
-//		s.transfer = transfer.NewTransfer()
-//	}
-//
-//	return s.transfer
-//}
 
 func (s *serviceProvider) Registration(reg grpc.ServiceRegistrar) {
 	desc.RegisterRoleServiceServer(reg, s.RoleImpl())
@@ -89,6 +84,11 @@ func (s *serviceProvider) addComponents() error {
 		server.NewServerGRPC(s.grpcServer, s.logger),
 		(*configuration.Config).GetGrpcConfig,
 		"GRPC Server") // TODO: Вынести имена компонентов в файл с константами
+
+	components.AddComponent(s.components,
+		s.Connector(),
+		(*configuration.Config).GetConnectorConfig,
+		"Connector") // TODO: Вынести имена компонентов в файл с константами
 
 	return nil
 }

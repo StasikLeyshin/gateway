@@ -1,7 +1,7 @@
 package model
 
 import (
-	desc "github.com/StasikLeyshin/libs-proto/grpc-gateway/role-service/pb"
+	desc "github.com/StasikLeyshin/libs-proto/grpc-gateway/role-service/grpc_gateway_pb"
 	//descInternal "github.com/StasikLeyshin/libs-proto/grpc/role-service/pb"
 )
 
@@ -17,10 +17,10 @@ func (convert *LoginResponse) ToService(value *desc.LoginResponse) *LoginRespons
 	return nil
 }
 
-//func (convert *LoginResponse) FromService() *transfer.LoginResponse {
-//	return nil
-//}
-//
+func (convert *LoginResponse) FromService() *desc.LoginResponse {
+	return nil
+}
+
 //func (convert *LoginResponse) ToService(value *transfer.LoginResponse) *LoginResponse {
 //	return nil
 //}

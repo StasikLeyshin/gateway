@@ -10,6 +10,7 @@ func (s *serviceProvider) Service() *service.Service {
 	if s.service == nil {
 		s.service = service.NewService(
 			s.Transfer(),
+			s.Connector(),
 		)
 	}
 

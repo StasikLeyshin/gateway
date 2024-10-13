@@ -10,8 +10,7 @@ import (
 type Application struct {
 	serviceProvider *serviceProvider
 	logger          *logrus.Logger
-	//components      []component
-	configPath string
+	configPath      string
 }
 
 type component interface {
@@ -93,32 +92,14 @@ func (a *Application) Run1(ctx context.Context) {
 
 	a.serviceProvider.InjectCallbacks()
 
+	err := a.serviceProvider.components.Configure(ctx, a.serviceProvider.config)
+	if err != nil {
+		a.logger.Error("Error: ", err)
+	}
+
 	a.serviceProvider.components.Start(ctx)
 
 	<-componentsCtx.Done()
 
 	a.serviceProvider.components.Stop(ctx)
 }
-
-//func (a *App) Run(ctx context.Context) {
-//	componentsCtx, componentsStopCtx := signal.NotifyContext(ctx, syscall.SIGHUP,
-//		syscall.SIGINT, syscall.SIGTERM, syscall.SIGQUIT)
-//	defer componentsStopCtx()
-//
-//	for _, comp := range a.components {
-//		err := comp.Start()
-//		if err != nil {
-//			a.logger.Printf("error when starting the component %v", err)
-//		}
-//	}
-//
-//	<-componentsCtx.Done()
-//
-//	for _, comp := range a.components {
-//		err := comp.Stop(ctx)
-//		if err != nil {
-//			a.logger.Printf("error when stopping the component %v", err)
-//		}
-//	}
-//
-//}

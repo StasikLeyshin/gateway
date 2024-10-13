@@ -3,6 +3,6 @@ package role
 type roleTransfer struct {
 }
 
-func NewTransferRole() *roleTransfer {
+func NewRoleTransfer() *roleTransfer {
 	return &roleTransfer{}
 }

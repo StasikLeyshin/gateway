@@ -4,3 +4,7 @@ grpc:
 
 grpc_gateway:
   port: 5001
+
+route:
+  node_id: "1111"
+  server_manager_address: "localhost:8181"
