@@ -8,11 +8,11 @@ import (
 var _ transfer.ServerManagerTransfer = (*serverManagerTransfer)(nil)
 
 type serverManagerTransfer struct {
-	serverType model.ServerType
+	serverTypes []model.ServerType
 }
 
-func NewServerManagerTransfer() *serverManagerTransfer {
+func NewServerManagerTransfer(serverTypes []model.ServerType) *serverManagerTransfer {
 	return &serverManagerTransfer{
-		serverType: model.ManageServerServerType,
+		serverTypes: serverTypes,
 	}
 }

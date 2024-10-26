@@ -14,6 +14,7 @@ type transfer struct {
 func NewTransfer() *transfer {
 	return &transfer{
 		RoleTransfer:          role.NewRoleTransfer(),
-		ServerManagerTransfer: manage_server.NewServerManagerTransfer(),
+		ServerManagerTransfer: manage_server.NewServerManagerTransfer(nil), // Сервер менеджер сам будет знать, какие типы
+		// proto файлов используются на каждом мс и сообщать об этом
 	}
 }

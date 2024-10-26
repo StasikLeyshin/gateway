@@ -10,7 +10,7 @@ import (
 	"gateway/internal/transfer"
 	"gateway/internal/transfer/connector"
 	"gateway/pkg/components"
-	desc "github.com/StasikLeyshin/libs-proto/grpc-gateway/role-service/grpc_gateway_pb"
+	desc "github.com/StasikLeyshin/libs-proto/grpc-gateway/role-service/pb"
 	"github.com/sirupsen/logrus"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/credentials/insecure"

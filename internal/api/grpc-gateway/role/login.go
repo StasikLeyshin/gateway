@@ -3,7 +3,7 @@ package role
 import (
 	"context"
 	"gateway/internal/api"
-	desc "github.com/StasikLeyshin/libs-proto/grpc-gateway/role-service/grpc_gateway_pb"
+	desc "github.com/StasikLeyshin/libs-proto/grpc-gateway/role-service/pb"
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
 )

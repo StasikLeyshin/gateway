@@ -1,7 +1,7 @@
 package model
 
 import (
-	desc "github.com/StasikLeyshin/libs-proto/grpc-gateway/role-service/grpc_gateway_pb"
+	desc "github.com/StasikLeyshin/libs-proto/grpc-gateway/role-service/pb"
 	//descInternal "github.com/StasikLeyshin/libs-proto/grpc/role-service/pb"
 )
 
