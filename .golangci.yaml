@@ -25,6 +25,9 @@ linters:
     - tagliatelle
     #- dupl
 
+  disable:
+    - typecheck
+
 linters-settings:
   gofmt:
     rewrite-rules:
@@ -41,6 +44,13 @@ linters-settings:
   dupl:
     # Tokens count to trigger issue, Default: 150
     threshold: 100
+
+  tagliatelle:
+
+    case:
+      rules:
+        json: snake
+        yaml: snake
 
 issues:
   max-same-issues: 0
