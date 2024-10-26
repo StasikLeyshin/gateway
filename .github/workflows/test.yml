@@ -1,0 +1,17 @@
+name: k3s Testing
+on:
+  push:
+    branches:
+      - 'fix/**'
+      - 'master'
+      - 'main'
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: debianmaster/actions-k3s@master
+        id: k3s
+        with:
+          version: 'latest'
+      - run: |
+          kubectl get nodes
