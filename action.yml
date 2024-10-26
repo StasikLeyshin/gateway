@@ -1,0 +1,17 @@
+name: 'Fancy name of the action'
+description: 'Short description'
+author: 'name I want to become famous with'
+inputs: # если нужны какие-то внешние параметры
+  github-token:
+    description: 'This is a token to access github'
+    required: true
+  flag:
+    description: 'This is flag that you can set to true or false'
+    default: false
+    required: false
+runs:
+  using: 'node20' # необходимая версия ноды – важно
+  main: 'lib/index.js' # итоговый файл со всем кодом
+branding: # как будет выглядеть иконка экшена в маркетплейсе
+  icon: 'terminal'
+  color: 'blue'

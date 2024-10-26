@@ -12,8 +12,8 @@ require (
 )
 
 require (
-	github.com/StasikLeyshin/libs-proto/grpc-gateway/role-service v0.0.11
-	github.com/StasikLeyshin/libs-proto/grpc/manage-server-service v0.0.15
+	github.com/StasikLeyshin/libs-proto/grpc-gateway/role-service v0.0.12
+	github.com/StasikLeyshin/libs-proto/grpc/manage-server-service v0.0.16
 	github.com/StasikLeyshin/libs-proto/grpc/role-service v0.0.0
 )
 

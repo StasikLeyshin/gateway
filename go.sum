@@ -1,7 +1,7 @@
-github.com/StasikLeyshin/libs-proto/grpc-gateway/role-service v0.0.11 h1:CifoEKtREefqcyfq5+r2Br7FtD4uq3/OGMk4hZ9122U=
-github.com/StasikLeyshin/libs-proto/grpc-gateway/role-service v0.0.11/go.mod h1:TwaSrqFAC4Ul//Yg0VfT04AJm5N0oq0CGkUZcApHfIk=
-github.com/StasikLeyshin/libs-proto/grpc/manage-server-service v0.0.15 h1:aGVcVKYcqr+yLI82bCTEuqfIxhP5O8DQPPx5zVz+nAw=
-github.com/StasikLeyshin/libs-proto/grpc/manage-server-service v0.0.15/go.mod h1:YeMtS8VE2w3bZk0r4P11Z4jAGIK1Lyrjok4r2278JF0=
+github.com/StasikLeyshin/libs-proto/grpc-gateway/role-service v0.0.12 h1:/kcuwUeMRF7UIrICZ8/DmuQGdTa7h4isSgM6rlwduCI=
+github.com/StasikLeyshin/libs-proto/grpc-gateway/role-service v0.0.12/go.mod h1:TwaSrqFAC4Ul//Yg0VfT04AJm5N0oq0CGkUZcApHfIk=
+github.com/StasikLeyshin/libs-proto/grpc/manage-server-service v0.0.16 h1:AYy6l0tLOSuKaW8cIstnOERT54U7teWQDi6yFKC1V44=
+github.com/StasikLeyshin/libs-proto/grpc/manage-server-service v0.0.16/go.mod h1:YeMtS8VE2w3bZk0r4P11Z4jAGIK1Lyrjok4r2278JF0=
 github.com/StasikLeyshin/libs-proto/grpc/role-service v0.0.0 h1:m/aNPuznAPNlrAMvsXCkIf0eN2RtG4/ghw+o9LoQbrI=
 github.com/StasikLeyshin/libs-proto/grpc/role-service v0.0.0/go.mod h1:Z8RJ6/gmovZ+XoKb7w0BDkdgnj9JiyRoZD9nX11gnSY=
 github.com/creack/pty v1.1.9/go.mod h1:oKZEueFk5CKHvIhNR5MUki03XCEU+Q6VDXinZuGJ33E=
