@@ -9,11 +9,16 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions-hub/kubectl@master
-        env:
-          KUBE_CONFIG: ${{ secrets.KUBE_CONFIG }}
+#      - uses: actions-hub/kubectl@master
+#        env:
+#          KUBE_CONFIG: ${{ secrets.KUBE_CONFIG }}
+#        with:
+#          args: get all -A
+      - uses: tale/kubectl-action@v1
         with:
-          args: get all -A
+          base64-kube-config: ${{ secrets.KUBE_CONFIG }}
+          kubectl-version: v1.22.0
+      - run: kubectl all -A
 
 #jobs:
 #
