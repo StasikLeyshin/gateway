@@ -2,7 +2,6 @@ name: k3s Testing
 on:
   push:
     branches:
-      - 'fix/**'
       - 'master'
       - 'main'
 jobs:
