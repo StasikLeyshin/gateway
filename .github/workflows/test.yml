@@ -57,6 +57,11 @@ jobs:
         run: |
           sudo echo "${{ secrets.DOCKER_IP_REPOSITORY }} ${{ env.DOCKER_HOST_REPOSITORY }}" | sudo tee -a /etc/hosts
 
+      - name: Add host to /etc/docker/daemon.json
+        run: |
+          sudo sed -i 's/}/,"insecure-registries": ["${{ env.DOCKER_HOST_REPOSITORY }}"]}/' /etc/docker/daemon.json
+          sudo systemctl restart docker.service
+
       - name: Push Image to Docker Hub
         run:
           docker push $DOCKER_HOST_REPOSITORY/$IMAGE_NAME:$GITHUB_RUN_NUMBER
