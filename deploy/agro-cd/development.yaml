@@ -15,7 +15,7 @@ spec:
     spec:
       containers:
         - name: k3s-demo1
-          image: reg.local/gateway
+          image: __DOCKER_REPOSITORY__/__IMAGE_NAME__:__IMAGE_TAG__
           imagePullPolicy: Always
 ---
 apiVersion: v1
