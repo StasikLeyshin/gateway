@@ -2,8 +2,8 @@ name: CD
 on:
   push:
     branches:
-      - master
-      - master
+      - master1
+      - master1
 jobs:
   test:
     runs-on: ubuntu-latest
