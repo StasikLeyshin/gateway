@@ -18,7 +18,7 @@ jobs:
         with:
           base64-kube-config: ${{ secrets.KUBE_CONFIG }}
           kubectl-version: v1.22.0
-      - run: kubectl all -A
+      - run: kubectl get all -A
 
 #jobs:
 #
