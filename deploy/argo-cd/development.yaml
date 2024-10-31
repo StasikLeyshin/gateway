@@ -15,7 +15,7 @@ spec:
     spec:
       containers:
         - name: k3s-demo1
-          image: __DOCKER_REPOSITORY__/__IMAGE_NAME__:__IMAGE_TAG__
+          image: 192.168.1.41:$Image_ID
           imagePullPolicy: Always
 ---
 apiVersion: v1
