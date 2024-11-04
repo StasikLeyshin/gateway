@@ -43,3 +43,13 @@ spec:
                 dependencyName: github-docker-publish-workflow-dependency-stag
                 dataKey: body.repository.name
               dest: spec.arguments.parameters.1.value
+
+---
+apiVersion: argoproj.io/v1alpha1
+kind: Workflow
+metadata:
+  generateName: my-workflow-
+  namespace: argo
+spec:
+  workflowTemplateRef:
+    name: my-workflow

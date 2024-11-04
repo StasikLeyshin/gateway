@@ -72,7 +72,6 @@ spec:
             git:
               repo: "{{inputs.parameters.repo}}"
               revision: "{{workflow.parameters.branch}}"
-              depth: 1
       volumes:
         - name: docker-config
           configMap:
