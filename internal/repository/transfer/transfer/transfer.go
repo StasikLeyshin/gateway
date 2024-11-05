@@ -1,9 +1,9 @@
 package transfer
 
 import (
-	transfer1 "gateway/internal/transfer"
-	"gateway/internal/transfer/grpc/manage-server"
-	"gateway/internal/transfer/grpc/role"
+	transfer1 "gateway/internal/repository/transfer"
+	"gateway/internal/repository/transfer/grpc/manage-server"
+	"gateway/internal/repository/transfer/grpc/role"
 )
 
 type transfer struct {

@@ -2,9 +2,9 @@ package transfer
 
 import (
 	"context"
-	"gateway/internal/transfer/clients"
-	manage_server "gateway/internal/transfer/grpc/manage-server/model"
-	role "gateway/internal/transfer/grpc/role/model"
+	"gateway/internal/repository/transfer/clients"
+	manage_server "gateway/internal/repository/transfer/grpc/manage-server/model"
+	role "gateway/internal/repository/transfer/grpc/role/model"
 	"github.com/StasikLeyshin/libs-proto/grpc/manage-server-service/pb"
 	"google.golang.org/grpc"
 )

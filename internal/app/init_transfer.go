@@ -1,9 +1,9 @@
 package app
 
 import (
-	transferInter "gateway/internal/transfer"
-	"gateway/internal/transfer/connector"
-	"gateway/internal/transfer/transfer"
+	transferInter "gateway/internal/repository/transfer"
+	"gateway/internal/repository/transfer/connector"
+	"gateway/internal/repository/transfer/transfer"
 )
 
 func (s *serviceProvider) Transfer() transferInter.Transfer {

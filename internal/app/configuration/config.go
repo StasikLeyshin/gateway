@@ -2,9 +2,8 @@ package configuration
 
 import (
 	"fmt"
+	"gateway/internal/repository/transfer/connector"
 	"gateway/internal/server/grpc"
-	"gateway/internal/transfer/connector"
-
 	"gopkg.in/yaml.v3"
 	"os"
 )

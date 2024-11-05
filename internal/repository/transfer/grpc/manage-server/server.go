@@ -2,8 +2,8 @@ package manage_server
 
 import (
 	"context"
-	"gateway/internal/transfer"
-	"gateway/internal/transfer/grpc/manage-server/model"
+	"gateway/internal/repository/transfer"
+	"gateway/internal/repository/transfer/grpc/manage-server/model"
 	"github.com/StasikLeyshin/libs-proto/grpc/manage-server-service/pb"
 )
 

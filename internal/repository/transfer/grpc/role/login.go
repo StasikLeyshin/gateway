@@ -2,7 +2,7 @@ package role
 
 import (
 	"context"
-	"gateway/internal/transfer/grpc/role/model"
+	"gateway/internal/repository/transfer/grpc/role/model"
 )
 
 func (r *roleTransfer) Login(ctx context.Context, request *model.LoginRequest) (*model.LoginResponse, error) {

@@ -2,9 +2,9 @@ package connector
 
 import (
 	"context"
-	"gateway/internal/transfer"
-	"gateway/internal/transfer/clients"
-	"gateway/internal/transfer/grpc/manage-server/model"
+	"gateway/internal/repository/transfer"
+	"gateway/internal/repository/transfer/clients"
+	"gateway/internal/repository/transfer/grpc/manage-server/model"
 	"gateway/pkg/utils"
 	"sync/atomic"
 )

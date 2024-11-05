@@ -1,8 +1,8 @@
 package service
 
 import (
+	"gateway/internal/repository/transfer"
 	"gateway/internal/service"
-	"gateway/internal/transfer"
 )
 
 type InternalGrpcServices struct {
