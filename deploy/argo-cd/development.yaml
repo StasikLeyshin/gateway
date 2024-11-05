@@ -15,7 +15,7 @@ spec:
     spec:
       containers:
         - name: k3s-demo1
-          image: 192.168.1.41/gateway:v0.0.15-3-g71bd50f
+          image: 192.168.1.41/gateway:v0.0.15-4-g3f93200
           imagePullPolicy: Always
 ---
 apiVersion: v1
