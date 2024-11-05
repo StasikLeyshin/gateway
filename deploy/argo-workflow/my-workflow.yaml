@@ -159,9 +159,9 @@ spec:
             git branch &&
             git config --global user.email "vladtit81@gmail.com" &&
             git config --global user.name {{workflow.parameters.org}} &&
-            git remote set-url origin https://$GH_ACCESS_TOKEN@github.com/{{workflow.parameters.org}}/{{workflow.parameters.k8repo}}.git &&
+            git remote set-url origin https://$GIT_ACCESS_TOKEN@github.com/{{workflow.parameters.org}}/{{workflow.parameters.k8repo}}.git &&
             git add development.yaml &&
-            git commit -m "Automation updated version.yaml" &&
+            git commit -m "Automation updated" &&
             git push --set-upstream origin {{inputs.parameters.branch1}}
         env:
           - name: GIT_ACCESS_TOKEN
