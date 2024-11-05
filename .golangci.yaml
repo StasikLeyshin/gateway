@@ -5,7 +5,7 @@ run:
   tests: false
 
 linters:
-  disable-all: true
+  #disable-all: true
   enable:
     # bugs/error
     - staticcheck
