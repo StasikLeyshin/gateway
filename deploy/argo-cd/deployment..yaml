@@ -19,9 +19,14 @@ spec:
           imagePullPolicy: Always
           volumeMounts:
             - name: fabric-volume
-              mountPath: opt/gateway/config
+              mountPath: /opt/gateway/config
               subPath: config
               readOnly: false
+      volumes:
+        - name: fabric-volume
+          persistentVolumeClaim:
+            readOnly: false
+            claimName: fabric-pvc
 ---
 apiVersion: v1
 kind: Service
