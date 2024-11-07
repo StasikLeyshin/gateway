@@ -153,14 +153,14 @@ spec:
             echo $Image_ID &&
             git checkout {{inputs.parameters.branch1}} &&
             cd deploy/argo-cd/ &&
-            sed -i "s/:v.*/:$Image_ID/g" development.yaml &&
-            cat development.yaml &&
+            sed -i "s/:v.*/:$Image_ID/g" deployment.yaml &&
+            cat deployment.yaml &&
             git status &&
             git branch &&
             git config --global user.email "vladtit81@gmail.com" &&
             git config --global user.name {{workflow.parameters.org}} &&
             git remote set-url origin https://$GIT_ACCESS_TOKEN@github.com/{{workflow.parameters.org}}/{{workflow.parameters.k8repo}}.git &&
-            git add development.yaml &&
+            git add deployment.yaml &&
             git commit -m "Automation updated" &&
             git push --set-upstream origin {{inputs.parameters.branch1}}
         env:
