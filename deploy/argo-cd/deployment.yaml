@@ -16,14 +16,14 @@ spec:
       volumes:
         - name: vol
           hostPath:
-            path: /opt/gateway/config
+            path: /opt/gateway
       containers:
         - name: k3s-demo1
           image: 192.168.1.41/gateway:v0.0.15-6-g702ad1b
           imagePullPolicy: Always
           volumeMounts:
             - name: vol
-              mountPath: /
+              mountPath: /config
               #subPath: config/config.local.yaml
 #          volumeMounts:
 #            - name: fabric-volume
