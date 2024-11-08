@@ -34,6 +34,8 @@ spec:
           env:
             - name: IS_DEPLOY
               value: 'TRUE'
+            - name: CONFIG_PATH
+              value: 'config-deploy'
 #          command:
 #            - /bin/sh
 #            - -c
