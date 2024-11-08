@@ -30,12 +30,12 @@ spec:
                 command:
                   - /bin/sh
                   - -c
-                  - cp -a /config/. /config-deploy
+                  - cp -R /config /deploy
           env:
             - name: IS_DEPLOY
               value: 'TRUE'
-            - name: CONFIG_PATH
-              value: 'config-deploy'
+            - name: DEPLOY_PATH
+              value: 'deploy'
 #          command:
 #            - /bin/sh
 #            - -c
