@@ -27,7 +27,7 @@ spec:
           command:
             - /bin/sh
             - -c
-            - ls
+            - ls config
             #- mkdir -p /opt/gateway/config
             #- cp -R /config/* /opt/gateway
               #subPath: config/config.local.yaml
