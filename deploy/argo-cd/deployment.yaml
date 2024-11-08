@@ -23,7 +23,7 @@ spec:
           imagePullPolicy: Always
           volumeMounts:
             - name: vol
-              mountPath: ./
+              mountPath: /config
               #subPath: config/config.local.yaml
 #          volumeMounts:
 #            - name: fabric-volume
