@@ -24,20 +24,20 @@ spec:
           volumeMounts:
             - name: vol
               mountPath: /config1
-#          lifecycle:
-#            postStart:
-#              exec:
-#                command:
-#                  - /bin/sh
-#                  - -c
-#                  - ls config
-          command:
-            - /bin/sh
-            - -c
-            #- ls
-            #- mkdir -p /opt/gateway/config1
-            - cp -R /config /config1
-            - ls
+          lifecycle:
+            postStart:
+              exec:
+                command:
+                  - /bin/sh
+                  - -c
+                  - cp -R /config /config1
+#          command:
+#            - /bin/sh
+#            - -c
+#            #- ls
+#            #- mkdir -p /opt/gateway/config1
+#            - cp -R /config /config1
+#            - ls
               #subPath: config/config.local.yaml
 #          volumeMounts:
 #            - name: fabric-volume
