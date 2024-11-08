@@ -3,7 +3,7 @@ package grpc
 import (
 	"context"
 	"fmt"
-	"github.com/sirupsen/logrus"
+	"gateway/pkg/log"
 	"google.golang.org/grpc"
 	"net"
 )
@@ -16,14 +16,14 @@ type Config struct {
 type ServerGRPC struct {
 	grpcServer *grpc.Server
 	config     Config
-	logger     *logrus.Logger
+	logger     log.Logger
 }
 
 func (c *Config) Address() string {
 	return net.JoinHostPort(c.Host, c.Port)
 }
 
-func NewServerGRPC(grpcServer *grpc.Server, logger *logrus.Logger) *ServerGRPC {
+func NewServerGRPC(grpcServer *grpc.Server, logger log.Logger) *ServerGRPC {
 
 	//grpcServer := grpc.NewServer(grpc.Creds(insecure.NewCredentials()))
 	//

@@ -2,14 +2,14 @@ package app
 
 import (
 	"context"
-	"github.com/sirupsen/logrus"
+	"gateway/pkg/log"
 	"os/signal"
 	"syscall"
 )
 
 type Application struct {
 	serviceProvider *serviceProvider
-	logger          *logrus.Logger
+	logger          log.Logger
 	configPath      string
 }
 
@@ -18,7 +18,7 @@ type component interface {
 	Stop(ctx context.Context) error
 }
 
-func NewApp(ctx context.Context, configPath string, logger *logrus.Logger) (*Application, error) {
+func NewApp(ctx context.Context, configPath string, logger log.Logger) (*Application, error) {
 	app := &Application{
 		configPath: configPath,
 		logger:     logger,

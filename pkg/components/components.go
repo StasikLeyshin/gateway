@@ -99,7 +99,8 @@ func (c *Components[Config]) Stop(ctx context.Context) []error {
 }
 
 func (c *Components[Config]) Configure(ctx context.Context, config Config) []error {
-	errors := make([]error, len(c.components))
+	//errors := make([]error, len(c.components))
+	var errors []error
 	for _, component := range c.components {
 		err := component.configuration(ctx, config)
 		if err != nil {

@@ -10,8 +10,8 @@ import (
 	serviceInterface "gateway/internal/service"
 	"gateway/internal/service/service"
 	"gateway/pkg/components"
+	"gateway/pkg/log"
 	desc "github.com/StasikLeyshin/libs-proto/grpc-gateway/role-service/pb"
-	"github.com/sirupsen/logrus"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/credentials/insecure"
 	"google.golang.org/grpc/reflection"
@@ -19,7 +19,7 @@ import (
 )
 
 type serviceProvider struct {
-	logger *logrus.Logger
+	logger log.Logger
 
 	components *components.Components[*configuration.Config]
 
@@ -38,7 +38,7 @@ type serviceProvider struct {
 	connector *connector.Connector
 }
 
-func newServiceProvider(logger *logrus.Logger) *serviceProvider {
+func newServiceProvider(logger log.Logger) *serviceProvider {
 	return &serviceProvider{
 		logger: logger,
 	}

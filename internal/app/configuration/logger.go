@@ -1,10 +1,11 @@
 package configuration
 
 import (
-	logger "gateway/pkg"
-	"github.com/sirupsen/logrus"
+	"gateway/pkg/log"
+	"gateway/pkg/log/zap"
+	"go.uber.org/zap/zapcore"
 )
 
-func NewLogger() *logrus.Logger {
-	return logger.NewLogger()
+func NewLogger(loggerName string, logLevel zapcore.Level, filename string) log.Logger {
+	return zap.NewLogger(loggerName, logLevel, filename)
 }

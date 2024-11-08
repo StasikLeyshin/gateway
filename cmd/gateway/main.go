@@ -4,28 +4,41 @@ import (
 	"context"
 	"gateway/internal/app"
 	"gateway/internal/app/configuration"
+	"go.uber.org/zap"
 	"os"
 	"path/filepath"
 )
 
+const (
+	configFolder = "config"
+	logFolder    = "log"
+)
+
 func main() {
+	var deployFolder string
 
 	configFileName := "config.local.yaml"
-	configFolder := "config"
+
+	levelLogger := zap.DebugLevel
+	fileNameLogger := "app.log"
 
 	if IsDeploy := os.Getenv("IS_DEPLOY"); IsDeploy != "" {
 		configFileName = "config.yaml"
+		levelLogger = zap.InfoLevel
 	}
 
-	if path := os.Getenv("CONFIG_PATH"); path != "" {
-		configFolder = path
+	if path := os.Getenv("DEPLOY_PATH"); path != "" {
+		deployFolder = path
 	}
 
-	// Файл с конфигурацией проекта
-	configPath := filepath.Join(configFolder, configFileName)
+	// Путь до файла с конфигурацией проекта
+	configPath := filepath.Join(deployFolder, configFolder, configFileName)
+
+	// Путь до файла с логами
+	loggerPath := filepath.Join(deployFolder, logFolder, fileNameLogger)
 
 	// Создаём логгер
-	logger := configuration.NewLogger()
+	logger := configuration.NewLogger("main", levelLogger, loggerPath)
 
 	startApp, err := app.NewApp(context.Background(), configPath, logger)
 	if err != nil {
