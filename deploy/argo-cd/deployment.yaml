@@ -19,7 +19,7 @@ spec:
             path: /opt/gateway
       containers:
         - name: k3s-demo1
-          image: 192.168.1.41/gateway:v0.0.16-1-g5e1d7be
+          image: 192.168.1.41/gateway:v0.0.16-3-g4280b83
           imagePullPolicy: Always
           volumeMounts:
             - name: vol
