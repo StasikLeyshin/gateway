@@ -23,20 +23,20 @@ spec:
           imagePullPolicy: Always
           volumeMounts:
             - name: vol
-              mountPath: /config
-          lifecycle:
-            postStart:
-              exec:
-                command:
-                  - /bin/sh
-                  - -c
-                  - ls config
-#          command:
-#            - /bin/sh
-#            - -c
-#            - ls config
-            #- mkdir -p /opt/gateway/config
-            #- cp -R /config/* /opt/gateway
+              mountPath: /config1
+#          lifecycle:
+#            postStart:
+#              exec:
+#                command:
+#                  - /bin/sh
+#                  - -c
+#                  - ls config
+          command:
+            - /bin/sh
+            - -c
+            - ls
+            #- mkdir -p /opt/gateway/config1
+            #- cp -R /config /config1
               #subPath: config/config.local.yaml
 #          volumeMounts:
 #            - name: fabric-volume
