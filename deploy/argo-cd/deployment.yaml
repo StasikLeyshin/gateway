@@ -21,13 +21,20 @@ spec:
         - name: k3s-demo1
           image: 192.168.1.41/gateway:v0.0.16
           imagePullPolicy: Always
-#          volumeMounts:
-#            - name: vol
-#              mountPath: /config
-          command:
-            - /bin/sh
-            - -c
-            - ls config
+          volumeMounts:
+            - name: vol
+              mountPath: /config
+          lifecycle:
+            postStart:
+              exec:
+                command:
+                  - /bin/sh
+                  - -c
+                  - ls
+#          command:
+#            - /bin/sh
+#            - -c
+#            - ls config
             #- mkdir -p /opt/gateway/config
             #- cp -R /config/* /opt/gateway
               #subPath: config/config.local.yaml
