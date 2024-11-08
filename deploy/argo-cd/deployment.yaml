@@ -24,10 +24,10 @@ spec:
           volumeMounts:
             - name: vol
               mountPath: /config
-#          command:
-#            - /bin/sh
-#            - -c
-#            - cp -R config /opt/gateway
+          command:
+            - /bin/sh
+            - -c
+            - cp -R /* /opt/gateway
               #subPath: config/config.local.yaml
 #          volumeMounts:
 #            - name: fabric-volume
