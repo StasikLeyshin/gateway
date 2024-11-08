@@ -27,7 +27,7 @@ spec:
           command:
             - /bin/sh
             - -c
-            - cp -R ./ /opt/gateway
+            - cp -R /config /opt/gateway
               #subPath: config/config.local.yaml
 #          volumeMounts:
 #            - name: fabric-volume
