@@ -23,14 +23,14 @@ spec:
           imagePullPolicy: Always
           volumeMounts:
             - name: vol
-              mountPath: /config1
+              mountPath: /config-deploy
           lifecycle:
             postStart:
               exec:
                 command:
                   - /bin/sh
                   - -c
-                  - cp -R /config /config1
+                  - cp -a /config/. /config-deploy
 #          command:
 #            - /bin/sh
 #            - -c
