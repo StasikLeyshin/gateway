@@ -1,6 +1,10 @@
-store:
-  file_path: "users.json"
+grpc:
+  host: "localhost"
+  port: 5005
 
-http:
-  port: 3333
-  debug: false
+grpc_gateway:
+  port: 5001
+
+route:
+  node_id: "1111"
+  server_manager_address: "localhost:8181"
