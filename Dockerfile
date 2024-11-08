@@ -7,7 +7,7 @@ RUN go mod download
 COPY . .
 RUN CGO_ENABLED=0 go build -ldflags="-w -s" -o /main ./cmd/gateway/main.go
 
-FROM scratch as runner
+FROM alpine:3.15 as runner
 COPY --from=builder /main /main
 COPY ./config /config
 CMD ["/main"]
