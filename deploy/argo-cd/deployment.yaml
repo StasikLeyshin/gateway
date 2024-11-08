@@ -30,7 +30,7 @@ spec:
                 command:
                   - /bin/sh
                   - -c
-                  - ls
+                  - ls config
 #          command:
 #            - /bin/sh
 #            - -c
