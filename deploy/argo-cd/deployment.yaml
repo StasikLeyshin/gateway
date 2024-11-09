@@ -34,7 +34,7 @@ spec:
           command:
             - /bin/sh
             - -c
-            - sleep 2
+            #- sleep 2
           env:
             - name: IS_DEPLOY
               value: 'TRUE'
