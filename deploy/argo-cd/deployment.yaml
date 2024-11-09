@@ -33,7 +33,6 @@ spec:
                   - cp -R /config /deploy
 #          command:
 #            - /bin/sh
-#            - -c
           env:
             - name: IS_DEPLOY
               value: 'TRUE'
