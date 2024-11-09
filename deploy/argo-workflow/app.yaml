@@ -1,0 +1,24 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: gateway
+  annotations:
+    notifications.argoproj.io/subscribe.on-sync-succeeded.telegram: "-1002423317571"
+    notifications.argoproj.io/subscribe.on-sync-failed.telegram: "-1002423317571"
+    notifications.argoproj.io/subscribe.on-health-degraded.telegram: "-1002423317571"
+    notifications.argoproj.io/subscribe.on-deployed.telegram: "-1002423317571"
+spec:
+  destination:
+    name: ''
+    namespace: default
+    server: https://kubernetes.default.svc
+  source:
+    path: deploy/argo-cd
+    repoURL: https://github.com/StasikLeyshin/gateway.git
+    targetRevision: deploy
+  sources: []
+  project: default
+  syncPolicy:
+    automated:
+      prune: false
+      selfHeal: false
