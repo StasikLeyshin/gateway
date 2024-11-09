@@ -10,7 +10,8 @@ import (
 )
 
 const (
-	logFolder = "log"
+	configFolder = "config"
+	logFolder    = "log"
 )
 
 func main() {
@@ -31,7 +32,7 @@ func main() {
 	}
 
 	// Путь до файла с конфигурацией проекта
-	configPath := filepath.Join(deployFolder, configFileName)
+	configPath := filepath.Join(deployFolder, configFolder, configFileName)
 
 	// Путь до файла с логами
 	loggerPath := filepath.Join(deployFolder, logFolder, fileNameLogger)
