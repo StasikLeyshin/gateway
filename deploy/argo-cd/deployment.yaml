@@ -31,10 +31,10 @@ spec:
 #                  - /bin/sh
 #                  - -c
 #                  - cp -a /config/. /deploy
-          command:
-            - /bin/sh
-            - -c
-            - ls
+#          command:
+#            - /bin/sh
+#            - -c
+#            - ls
           env:
             - name: IS_DEPLOY
               value: 'TRUE'
