@@ -30,8 +30,7 @@ spec:
                 command:
                   - /bin/sh
                   - -c
-                  - mkdir /deploy/config/
-                  - cp -a /config/. /deploy/config/
+                  - cp -a /config/. /deploy/
           env:
             - name: IS_DEPLOY
               value: 'TRUE'
