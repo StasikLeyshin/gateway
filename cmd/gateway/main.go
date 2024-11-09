@@ -7,6 +7,7 @@ import (
 	"go.uber.org/zap"
 	"os"
 	"path/filepath"
+	"time"
 )
 
 const (
@@ -25,6 +26,9 @@ func main() {
 	if IsDeploy := os.Getenv("IS_DEPLOY"); IsDeploy != "" {
 		configFileName = "config.yaml"
 		levelLogger = zap.InfoLevel
+
+		// Нужно для того, чтобы успела скопироваться папка с config в k8s
+		time.Sleep(time.Second * 1)
 	}
 
 	if path := os.Getenv("DEPLOY_PATH"); path != "" {
