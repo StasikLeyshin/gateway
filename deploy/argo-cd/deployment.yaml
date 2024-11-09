@@ -31,8 +31,7 @@ spec:
                   - /bin/sh
                   - -c
                   - cp -R /config /deploy
-#          command:
-#            - /bin/sh
+
           env:
             - name: IS_DEPLOY
               value: 'TRUE'
