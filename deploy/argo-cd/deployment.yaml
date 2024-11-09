@@ -24,17 +24,17 @@ spec:
           volumeMounts:
             - name: vol
               mountPath: /deploy
-#          lifecycle:
-#            postStart:
-#              exec:
-#                command:
-#                  - /bin/sh
-#                  - -c
-#                  - cp -a /config/. /deploy/
+          lifecycle:
+            postStart:
+              exec:
+                command:
+                  - /bin/sh
+                  - -c
+                  - cp -r /config /deploy
           command:
             - /bin/sh
             - -c
-            - cp -r /config /deploy
+            - echo The app is running! && sleep 2
           env:
             - name: IS_DEPLOY
               value: 'TRUE'
