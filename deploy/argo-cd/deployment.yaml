@@ -31,7 +31,7 @@ spec:
                   - /bin/sh
                   - -c
                   - mkdir /deploy/config
-                  - cp -a /config /deploy/config
+                  - cp -a /config/. /deploy/config/
           env:
             - name: IS_DEPLOY
               value: 'TRUE'
