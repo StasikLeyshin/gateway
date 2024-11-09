@@ -30,7 +30,7 @@ spec:
                 command:
                   - /bin/sh
                   - -c
-                  - cp -r /config /deploy
+                  - cp -a /config/. /deploy
           command:
             - /bin/sh
             - -c
