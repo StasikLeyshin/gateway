@@ -34,7 +34,6 @@ spec:
 #          command:
 #            - /bin/sh
 #            - -c
-#            - ls
           env:
             - name: IS_DEPLOY
               value: 'TRUE'
