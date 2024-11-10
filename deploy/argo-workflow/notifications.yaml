@@ -1,5 +1,7 @@
 apiVersion: v1
 data:
+  context: |
+    argocdUrl: http://argocd.local:31804
   template.app-created: |
     email:
       subject: Application {{.app.metadata.name}} has been created.
@@ -16,9 +18,9 @@ data:
     email:
       subject: New version of an application {{.app.metadata.name}} is up and running.
     message: |
-      Run!
-      {{if eq .serviceType "slack"}}:white_check_mark:{{end}} Application: {{.app.metadata.name}}
-      Status: {{.app.status.sync.status}}
+      ✅ Run!
+      {{if eq .serviceType "slack"}}:white_check_mark:{{end}}🧩 Application: {{.app.metadata.name}}
+      📝 Status: {{.app.status.sync.status}}
     slack:
       attachments: |
         [{
@@ -99,8 +101,10 @@ data:
     email:
       subject: Application {{.app.metadata.name}} has degraded.
     message: |
-      {{if eq .serviceType "slack"}}:exclamation:{{end}} Application {{.app.metadata.name}} has degraded.
-      Application details: {{.context.argocdUrl}}/applications/{{.app.metadata.name}}.
+      ⚠️ Degraded!
+      {{if eq .serviceType "slack"}}:exclamation:{{end}}🧩 Application: {{.app.metadata.name}}
+      📝 Status: {{.app.status.sync.status}}
+      🌐 Details: {{.context.argocdUrl}}/applications/{{.app.metadata.name}}.
     slack:
       attachments: |
         [{
@@ -172,8 +176,12 @@ data:
     email:
       subject: Failed to sync application {{.app.metadata.name}}.
     message: |
-      {{if eq .serviceType "slack"}}:exclamation:{{end}}  The sync operation of application {{.app.metadata.name}} has failed at {{.app.status.operationState.finishedAt}} with the following error: {{.app.status.operationState.message}}
-      Sync operation details are available at: {{.context.argocdUrl}}/applications/{{.app.metadata.name}}?operation=true .
+      ❌ Failed!
+      {{if eq .serviceType "slack"}}:exclamation:{{end}}🧩 Application: {{.app.metadata.name}}
+      📝 Status: {{.app.status.sync.status}}
+      ⏰ Has failed: {{.app.status.operationState.finishedAt}}
+      ✉️ Error: {{.app.status.operationState.message}}
+      🌐 Details: {{.context.argocdUrl}}/applications/{{.app.metadata.name}}?operation=true .
     slack:
       attachments: |
         [{
@@ -402,17 +410,17 @@ data:
     email:
       subject: Application {{.app.metadata.name}} has been successfully synced.
     message: |
-      Successfully synced!
-      {{if eq .serviceType "slack"}}:white_check_mark:{{end}} Application: {{.app.metadata.name}}
-      Status: {{.app.status.sync.status}}
-      Datetime: {{.app.status.operationState.finishedAt}}.
+      ✅ Successfully synced!
+      {{if eq .serviceType "slack"}}:white_check_mark:{{end}}🧩 Application: {{.app.metadata.name}}
+      📝 Status: {{.app.status.sync.status}}
+      ⏰ Has synced: {{.app.status.operationState.finishedAt}}.
       
-      GitHub Author: {{ call .repo.GetCommitMetadata.Author }}
-      GitHub Message: {{ call .repo.GetCommitMetadata.Message }}
-      GitHub Date: {{ call .repo.GetCommitMetadata.Date }}
-      GitHub Tags: {{ call .repo.GetCommitMetadata.Tags }}
+      👤 GitHub Author: {{(call .repo.GetCommitMetadata .app.status.sync.revision).Author}}
+      ✉️ GitHub Message: {{(call .repo.GetCommitMetadata .app.status.sync.revision).Message}}
+      ⏰ GitHub Date: {{(call .repo.GetCommitMetadata .app.status.sync.revision).Date}}
+      📎 GitHub Tags: {{(call .repo.GetCommitMetadata .app.status.sync.revision).Tags}}
       
-      Sync operation details are available at: {{.context.argocdUrl}}/applications/{{.app.metadata.name}}?operation=true .
+      🌐 Details: {{.context.argocdUrl}}/applications/{{.app.metadata.name}}?operation=true .
     slack:
       attachments: |
         [{
@@ -535,3 +543,4 @@ kind: ConfigMap
 metadata:
   creationTimestamp: null
   name: argocd-notifications-cm
+  namespace: argocd
