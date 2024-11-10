@@ -2,9 +2,13 @@ package main
 
 import (
 	"context"
+	"fmt"
 	"gateway/internal/app"
 	"gateway/internal/app/configuration"
+	"go.mongodb.org/mongo-driver/mongo"
+	"go.mongodb.org/mongo-driver/mongo/options"
 	"go.uber.org/zap"
+	"log"
 	"os"
 	"path/filepath"
 	"time"
@@ -15,7 +19,7 @@ const (
 	logFolder    = "log"
 )
 
-func main() {
+func main1() {
 	var deployFolder string
 
 	configFileName := "config.local.yaml"
@@ -53,4 +57,23 @@ func main() {
 	}
 
 	startApp.Run(context.Background())
+}
+
+func main() {
+	// Set client options
+	clientOptions := options.Client().ApplyURI("mongodb://mongodb-service:27017")
+
+	// Connect to MongoDB
+	client, err := mongo.Connect(context.TODO(), clientOptions)
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	// Check the connection
+	err = client.Ping(context.TODO(), nil)
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	fmt.Println("Connected to MongoDB!")
 }
