@@ -34,4 +34,7 @@
 - [gateway](https://github.com/StasikLeyshin/gateway) - Api-шлюз
   - [role-service](https://github.com/StasikLeyshin/role-service) - Сервис ролей
   - [manage-service](https://github.com/StasikLeyshin/manage-service) - Сервис менеджера микросервисов
+
+### Вспомогательные репозитории
 - [libs-proto](https://github.com/StasikLeyshin/libs-proto) - Хранение proto файлов и сгенерированного кода из них
+- [deployment](https://github.com/StasikLeyshin/deployment) - Хранение всех манифестов микросервисов для деплоя
