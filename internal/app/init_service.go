@@ -9,6 +9,7 @@ import (
 func (s *serviceProvider) Service() *service.Service {
 	if s.service == nil {
 		s.service = service.NewService(
+			s.logger.NewNameLogger(ComponentNameService.String()),
 			s.Transfer(),
 			s.Connector(),
 		)

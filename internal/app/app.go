@@ -13,11 +13,6 @@ type Application struct {
 	configPath      string
 }
 
-type component interface {
-	Start() error
-	Stop(ctx context.Context) error
-}
-
 func NewApp(ctx context.Context, configPath string, logger log.Logger) (*Application, error) {
 	app := &Application{
 		configPath: configPath,
@@ -52,7 +47,7 @@ func (a *Application) initDeps(ctx context.Context) error {
 }
 
 func (a *Application) initServiceProvider(_ context.Context) error {
-	a.serviceProvider = newServiceProvider(a.logger)
+	a.serviceProvider = newServiceProvider(a.logger.NewNameLogger(ComponentNameServiceProvider.String()))
 	return nil
 }
 
@@ -85,7 +80,7 @@ func (a *Application) addComponents(_ context.Context) error {
 	return nil
 }
 
-func (a *Application) Run1(ctx context.Context) {
+func (a *Application) Run(ctx context.Context) {
 	componentsCtx, componentsStopCtx := signal.NotifyContext(ctx, syscall.SIGHUP,
 		syscall.SIGINT, syscall.SIGTERM, syscall.SIGQUIT)
 	defer componentsStopCtx()

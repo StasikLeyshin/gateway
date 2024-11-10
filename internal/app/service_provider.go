@@ -81,14 +81,20 @@ func (s *serviceProvider) initComponents() {
 
 func (s *serviceProvider) addComponents() error {
 	components.AddComponent(s.components,
-		server.NewServerGRPC(s.grpcServer, s.logger),
+		server.NewServerGRPC(
+			s.grpcServer,
+			s.logger.NewNameLogger(ComponentNameGRPCServer.String()),
+		),
 		(*configuration.Config).GetGrpcConfig,
-		"GRPC Server") // TODO: Вынести имена компонентов в файл с константами
+		ComponentNameGRPCServer.String(),
+	)
 
-	components.AddComponent(s.components,
+	components.AddComponent(
+		s.components,
 		s.Connector(),
 		(*configuration.Config).GetConnectorConfig,
-		"Connector") // TODO: Вынести имена компонентов в файл с константами
+		ComponentNameConnector.String(),
+	)
 
 	return nil
 }

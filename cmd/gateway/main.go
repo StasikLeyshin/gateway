@@ -27,7 +27,7 @@ func main() {
 		configFileName = "config.yaml"
 		levelLogger = zap.InfoLevel
 
-		// Нужно для того, чтобы успела скопироваться папка с config в k8s
+		// Нужно для того, чтобы успела скопироваться папка с конфигами yaml в volume k8s
 		time.Sleep(time.Second * 1)
 	}
 
@@ -42,7 +42,9 @@ func main() {
 	loggerPath := filepath.Join(deployFolder, logFolder, fileNameLogger)
 
 	// Создаём логгер
-	logger := configuration.NewLogger("main", levelLogger, loggerPath)
+	logger := configuration.NewLogger(levelLogger, loggerPath)
+
+	logger.Info("Start App")
 
 	startApp, err := app.NewApp(context.Background(), configPath, logger)
 	if err != nil {
@@ -50,5 +52,5 @@ func main() {
 		return
 	}
 
-	startApp.Run1(context.Background())
+	startApp.Run(context.Background())
 }

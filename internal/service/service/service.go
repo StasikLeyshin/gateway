@@ -3,32 +3,31 @@ package service
 import (
 	"gateway/internal/repository/transfer"
 	"gateway/internal/service"
+	"gateway/pkg/log"
 )
-
-type InternalGrpcServices struct {
-	roleService service.RoleService
-}
 
 type AppCallbacks struct {
 	RoleService service.RoleService
 }
 
 type Service struct {
-	internalGrpcServices InternalGrpcServices
-	Transfer             transfer.Transfer
-	appCallbacks         *AppCallbacks
-	connector            transfer.Connector
+	logger log.Logger
+
+	Transfer  transfer.Transfer
+	Services  *AppCallbacks
+	connector transfer.Connector
 }
 
-func NewService(transfer transfer.Transfer, connector transfer.Connector) *Service {
+func NewService(logger log.Logger, transfer transfer.Transfer, connector transfer.Connector) *Service {
 	return &Service{
+		logger:    logger,
 		Transfer:  transfer,
 		connector: connector,
 	}
 }
 
 func (g *Service) Inject(appCallbacks *AppCallbacks) {
-	g.appCallbacks = appCallbacks
+	g.Services = appCallbacks
 }
 
 func (g *Service) GetTransfer() transfer.Transfer {
