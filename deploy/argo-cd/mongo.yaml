@@ -86,7 +86,7 @@ spec:
     - metadata:
         name: mongodb-data
       spec:
-        storageClassName: "fast"
+        #storageClassName: "fast"
         accessModes: [ "ReadWriteOnce" ]
         resources:
           requests:
