@@ -1,0 +1,44 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: library-chart
+spec:
+  destination:
+    name: ''
+    namespace: ''
+    server: https://kubernetes.default.svc
+  source:
+    path: ''
+    repoURL: https://github.com/StasikLeyshin/deployment.git
+    targetRevision: main
+  sources: []
+  project: default
+  syncPolicy:
+    automated: null
+
+
+---
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: library-chart
+  namespace: argocd
+spec:
+  project: default
+  sources:
+    - repoURL: http://192.168.1.41:30167
+      chart: library
+      targetRevision: 0.0.1
+      helm:
+        valueFiles:
+          - $values/gateway/values.yaml
+    - repoURL: https://github.com/StasikLeyshin/deployment.git
+      targetRevision: main
+      ref: values
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: default
+  syncPolicy:
+    automated:
+      prune: false
+      selfHeal: false
