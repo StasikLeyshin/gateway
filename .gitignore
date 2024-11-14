@@ -32,3 +32,5 @@ internal/manager/interfaces/web/grpc/grpc_domain/manager_grpc.pb.go
 .idea
 
 !.idea/codeStyles
+
+*.log
