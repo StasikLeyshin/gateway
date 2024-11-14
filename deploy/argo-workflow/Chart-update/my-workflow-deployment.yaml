@@ -1,0 +1,93 @@
+apiVersion: argoproj.io/v1alpha1
+kind: WorkflowTemplate
+metadata:
+  name: my-workflow-deployment
+  namespace: argo
+spec:
+  arguments:
+    parameters:
+      - name: org
+        value: "StasikLeyshin"
+
+      - name: repo-deployment
+        value: "deployment"
+      - name: branch-deployment
+        value: "main"
+
+  entrypoint: main
+  templates:
+    - name: main
+      steps:
+        - - name: git-clone-deployment
+            template: git-clone-deployment
+            arguments:
+              parameters:
+                - name: repo-deployment
+                  value: "https://github.com/{{workflow.parameters.org}}/{{workflow.parameters.repo-deployment}}.git"
+        - - name: build-helm
+            template: build-helm
+            arguments:
+              artifacts:
+                - name: repo-deployment
+                  from: "{{steps.git-clone-deployment.outputs.artifacts.repo-deployment}}"
+              parameters:
+                - name: image-deployment
+                  value: "{{steps.git-clone-deployment.outputs.parameters.generated-image-tag-deployment}}"
+
+    - name: git-clone-deployment
+      inputs:
+        parameters:
+          - name: repo-deployment
+        artifacts:
+          - name: repo-deployment
+            path: /repo-deployment
+            git:
+              repo: "{{inputs.parameters.repo-deployment}}"
+              revision: "{{workflow.parameters.branch-deployment}}"
+      container:
+        image: golang:1.10
+        command: [ sh, -c ]
+        args: [ "echo \"$(git rev-parse | sed -r 's/[/_]/-/g')$(git describe --tags)\" > /tmp/image_tag_deployment" ]
+        workingDir: /repo-deployment
+      outputs:
+        artifacts:
+          - name: repo-deployment
+            path: /repo-deployment/
+            s3:
+              insecure: true
+              endpoint: 192.168.1.41:31217
+              bucket: argo
+              region: us-west-2
+              key: path/git/repo-deployment.tgz
+
+              accessKeySecret:
+                name: my-s3-credentials
+                key: accessKey
+              secretKeySecret:
+                name: my-s3-credentials
+                key: secretKey
+        parameters:
+          - name: generated-image-tag-deployment
+            valueFrom:
+              default: "default"
+              path: /tmp/image_tag_deployment
+
+    - name: build-helm
+      inputs:
+        artifacts:
+          - name: repo-deployment
+            path: repo-deployment
+        parameters:
+          - name: image-deployment
+      container:
+        image: alpine/helm:3.16
+        workingDir: /repo-deployment
+        command:  ["/bin/sh"]
+        args:
+          - -c
+          - >-
+            helm repo add chartmuseum http://192.168.1.41:31744 &&
+            helm package library-chart -d library-chart/ --version {{inputs.parameters.image-deployment}} &&
+            cd library-chart &&
+            ls &&
+            curl -v --data-binary "@library-{{inputs.parameters.image-deployment}}.tgz"  http://192.168.1.41:31744/api/charts

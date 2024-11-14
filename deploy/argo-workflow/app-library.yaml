@@ -23,12 +23,17 @@ kind: Application
 metadata:
   name: library-chart
   namespace: argocd
+  annotations:
+    notifications.argoproj.io/subscribe.on-sync-succeeded.telegram: "-1002423317571"
+    notifications.argoproj.io/subscribe.on-sync-failed.telegram: "-1002423317571"
+    notifications.argoproj.io/subscribe.on-health-degraded.telegram: "-1002423317571"
+    notifications.argoproj.io/subscribe.on-deployed.telegram: "-1002423317571"
 spec:
   project: default
   sources:
-    - repoURL: http://192.168.1.41:30167
+    - repoURL: http://192.168.1.41:31744
       chart: library
-      targetRevision: 0.0.1
+      targetRevision: 0.0.3
       helm:
         valueFiles:
           - $values/gateway/values.yaml

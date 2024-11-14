@@ -1,0 +1,87 @@
+apiVersion: argoproj.io/v1alpha1
+kind: EventSource
+metadata:
+  name: webhook-deployment
+  namespace: argo-events
+spec:
+  service:
+    ports:
+      - port: 12001
+        targetPort: 12001
+  github:
+    example:
+      repositories:
+        - owner: StasikLeyshin
+          names:
+            - deployment
+      webhook:
+        endpoint: /webhook-deployment
+        port: "12001"
+        method: POST
+      events:
+        - "create"
+      webhookSecret:
+        name: webhook-token
+        key: my-token
+      insecure: false
+      active: true
+      contentType: "json"
+
+
+---
+apiVersion: v1
+kind: Secret
+metadata:
+  name: webhook-token
+type: Opaque
+stringData:
+  my-token: ""
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: webhook-token
+spec:
+  restartPolicy: OnFailure
+  volumes:
+    - name: webhook-token
+      secret:
+        secretName: webhook-token
+  containers:
+    - name: webhook-token-test
+      image: registry.k8s.io/busybox
+      command:
+        - ls
+        - "-l"
+        - "/etc/secret-volume-webhook-token"
+      volumeMounts:
+        - name: webhook-token
+          readOnly: true
+          mountPath: "/etc/secret-volume-webhook-token"
+
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: ingress-argo-events
+  namespace: argo-events
+spec:
+  ingressClassName: nginx
+  rules:
+    -  http:
+         paths:
+           - path: /webhook
+             pathType: Prefix
+             backend:
+               service:
+                 name: webhook-eventsource-svc
+                 port:
+                   number: 12000
+           - path: /webhook-deployment
+             pathType: Prefix
+             backend:
+               service:
+                 name: webhook-deployment-eventsource-svc
+                 port:
+                   number: 12001
+
