@@ -17,7 +17,7 @@ type LoggerImpl struct {
 func NewDebugLogger(logLevel zapcore.Level, filename string) log.Logger {
 	//encoderCfg := zap.NewProductionEncoderConfig()
 	encoderCfg := zapcore.EncoderConfig{
-		TimeKey:     "ts",
+		TimeKey:     "datetime",
 		LevelKey:    "level",
 		NameKey:     "logger",
 		CallerKey:   "caller",

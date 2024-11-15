@@ -4,6 +4,8 @@ import (
 	"context"
 	roleServiceGRPC "gateway/internal/api/grpc-gateway/role"
 	"gateway/internal/app/configuration"
+	"gateway/internal/repository"
+	"gateway/internal/repository/database/mongo"
 	"gateway/internal/repository/transfer"
 	"gateway/internal/repository/transfer/connector"
 	server "gateway/internal/server/grpc"
@@ -36,6 +38,10 @@ type serviceProvider struct {
 	roleImpl *roleServiceGRPC.Implementation
 
 	connector *connector.Connector
+
+	mongoClient *mongo.Client
+
+	fileLog repository.FileLog
 }
 
 func newServiceProvider(logger log.Logger) *serviceProvider {
