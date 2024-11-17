@@ -16,7 +16,7 @@ func (s *serviceProvider) Transfer() transferInter.Transfer {
 
 func (s *serviceProvider) Connector() *connector.Connector {
 	if s.connector == nil {
-		s.connector = connector.NewConnector(s.Transfer())
+		s.connector = connector.NewConnector(s.logger.NewNameLogger(ComponentNameConnector.String()), s.Transfer())
 	}
 
 	return s.connector

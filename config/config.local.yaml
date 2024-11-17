@@ -8,3 +8,7 @@ grpc_gateway:
 route:
   node_id: "1111"
   server_manager_address: "localhost:8181"
+
+mongo:
+  connection_string: "mongodb://localhost:27017"
+  database_name: "gateway"

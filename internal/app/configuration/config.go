@@ -2,6 +2,7 @@ package configuration
 
 import (
 	"fmt"
+	"gateway/internal/repository/database/mongo"
 	"gateway/internal/repository/transfer/connector"
 	"gateway/internal/server/grpc"
 	"gopkg.in/yaml.v3"
@@ -12,6 +13,7 @@ type Config struct {
 	Grpc        grpc.Config      `yaml:"grpc"`
 	GrpcGateway grpc.Config      `yaml:"grpc_gateway"`
 	Connector   connector.Config `yaml:"route"`
+	Mongo       mongo.Config     `yaml:"mongo"`
 }
 
 func NewConfig(configPath string) (*Config, error) {
@@ -49,4 +51,8 @@ func (c *Config) GetGrpcGatewayConfig() grpc.Config {
 
 func (c *Config) GetConnectorConfig() *connector.Config {
 	return &c.Connector
+}
+
+func (c *Config) GetMongoConfig() mongo.Config {
+	return c.Mongo
 }

@@ -7,6 +7,8 @@ const (
 	ComponentNameConnector       ComponentName = "Connector"
 	ComponentNameService         ComponentName = "Service"
 	ComponentNameServiceProvider ComponentName = "Provider"
+
+	ComponentNameRepositoryMongo ComponentName = "MongoDB"
 )
 
 func (name ComponentName) String() string {

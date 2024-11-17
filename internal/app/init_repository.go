@@ -14,9 +14,9 @@ func (s *serviceProvider) Mongo() *mongo.Client {
 	return s.mongoClient
 }
 
-func (s *serviceProvider) FileLog() repository.FileLog {
+func (s *serviceProvider) FileLog() repository.LogRepository {
 	if s.fileLog == nil {
-		s.fileLog = logRepository.NewFileLog("Log") // TODO: Вынести в константы или в конфиг
+		s.fileLog = logRepository.NewLogRepository("Log", s.Mongo()) // TODO: Вынести в константы или в конфиг
 	}
 
 	return s.fileLog

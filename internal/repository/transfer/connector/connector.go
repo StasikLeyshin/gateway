@@ -5,8 +5,10 @@ import (
 	"gateway/internal/repository/transfer"
 	"gateway/internal/repository/transfer/clients"
 	"gateway/internal/repository/transfer/grpc/manage-server/model"
+	"gateway/pkg/log"
 	"gateway/pkg/utils"
 	"sync/atomic"
+	"time"
 )
 
 type Config struct {
@@ -16,14 +18,18 @@ type Config struct {
 
 type (
 	Connector struct {
+		logger log.Logger
+
 		transfer transfer.Transfer
 		config   atomic.Pointer[Config]
 		clients  *utils.Safe[model.ServerType, string, *clients.Client]
 	}
 )
 
-func NewConnector(transfer transfer.Transfer) *Connector {
+func NewConnector(logger log.Logger, transfer transfer.Transfer) *Connector {
 	return &Connector{
+		logger: logger,
+
 		transfer: transfer,
 
 		clients: utils.NewSafe[model.ServerType, string, *clients.Client](),
@@ -38,6 +44,12 @@ func (c *Connector) Configure(ctx context.Context, config *Config) error {
 
 func (c *Connector) Start(ctx context.Context) error {
 	c.SyncServersAddress(ctx)
+
+	for i := 0; i < 100; i++ {
+		c.logger.Info("TEST TEST", i)
+
+		time.Sleep(time.Second * 5)
+	}
 
 	return nil
 }

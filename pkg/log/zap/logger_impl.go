@@ -1,17 +1,20 @@
 package zap
 
 import (
+	"fmt"
 	"gateway/pkg/log"
 	"go.uber.org/zap"
 	"go.uber.org/zap/zapcore"
 	"gopkg.in/natefinch/lumberjack.v2"
+	"io"
 	"os"
 )
 
 const errKey = "error"
 
 type LoggerImpl struct {
-	logger *zap.SugaredLogger
+	logger   *zap.SugaredLogger
+	logLevel zapcore.Level
 }
 
 func NewDebugLogger(logLevel zapcore.Level, filename string) log.Logger {
@@ -57,16 +60,26 @@ func NewDebugLogger(logLevel zapcore.Level, filename string) log.Logger {
 	).Sugar()
 
 	return &LoggerImpl{
-		logger: logger,
+		logger:   logger,
+		logLevel: logLevel,
 	}
 }
 
 func NewLogger(logLevel zapcore.Level, filename string) log.Logger {
-	encoderCfg := zap.NewProductionEncoderConfig()
-	encoderCfg.EncodeTime = zapcore.ISO8601TimeEncoder
-	encoderCfg.EncodeCaller = zapcore.ShortCallerEncoder
-	encoderCfg.FunctionKey = "func"
-	encoderCfg.CallerKey = "call"
+	encoderCfg := zapcore.EncoderConfig{
+		TimeKey:     "datetime",
+		LevelKey:    "level",
+		NameKey:     "logger",
+		CallerKey:   "caller",
+		FunctionKey: "func",
+		MessageKey:  "msg",
+		//StacktraceKey:  "stacktrace",
+		LineEnding:     zapcore.DefaultLineEnding,
+		EncodeLevel:    zapcore.CapitalColorLevelEncoder,
+		EncodeTime:     zapcore.ISO8601TimeEncoder,
+		EncodeDuration: zapcore.StringDurationEncoder,
+		EncodeCaller:   zapcore.ShortCallerEncoder,
+	}
 
 	consoleEncoder := zapcore.NewConsoleEncoder(encoderCfg)
 	fileEncoder := zapcore.NewJSONEncoder(encoderCfg)
@@ -92,14 +105,50 @@ func NewLogger(logLevel zapcore.Level, filename string) log.Logger {
 	).Sugar()
 
 	return &LoggerImpl{
-		logger: logger,
+		logger:   logger,
+		logLevel: logLevel,
 	}
 }
 
-func (log *LoggerImpl) NewNameLogger(componentName string) log.Logger {
-	return &LoggerImpl{
-		logger: log.logger.Named(componentName),
+func (log *LoggerImpl) SetLoggerDb(w io.Writer) {
+	encoderCfg := zapcore.EncoderConfig{
+		TimeKey:     "datetime",
+		LevelKey:    "level",
+		NameKey:     "logger",
+		CallerKey:   "caller",
+		FunctionKey: "func",
+		MessageKey:  "msg",
+		//StacktraceKey:  "stacktrace",
+		LineEnding:     zapcore.DefaultLineEnding,
+		EncodeLevel:    zapcore.CapitalColorLevelEncoder,
+		EncodeTime:     zapcore.RFC3339TimeEncoder,
+		EncodeDuration: zapcore.StringDurationEncoder,
+		EncodeCaller:   zapcore.ShortCallerEncoder,
 	}
+
+	fileEncoder := zapcore.NewJSONEncoder(encoderCfg)
+
+	core := zapcore.NewTee(
+		zapcore.NewCore(fileEncoder, zapcore.AddSync(w), log.logLevel),
+		log.logger.Desugar().Core(),
+	)
+
+	logger := zap.New(
+		core,
+		//zap.Fields(zap.String("name", loggerName)),
+		zap.WithCaller(true),
+		zap.AddCallerSkip(1),
+		//zap.AddStacktrace(logLevel),
+	).Sugar()
+
+	log.logger = logger
+
+	fmt.Println(log)
+}
+
+func (log *LoggerImpl) NewNameLogger(componentName string) log.Logger {
+	log.logger = log.logger.Named(componentName)
+	return log
 }
 
 func (log *LoggerImpl) With(args ...any) log.Logger {

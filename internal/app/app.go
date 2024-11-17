@@ -80,6 +80,27 @@ func (a *Application) addComponents(_ context.Context) error {
 	return nil
 }
 
+func (a *Application) initDbLogger(_ context.Context) error {
+	a.logger.SetLoggerDb(a.serviceProvider.LogService())
+
+	return nil
+}
+
+func (a *Application) initPostConfigure(ctx context.Context) error {
+	inits := []func(context.Context) error{
+		a.initDbLogger,
+	}
+
+	for _, f := range inits {
+		err := f(ctx)
+		if err != nil {
+			return err
+		}
+	}
+
+	return nil
+}
+
 func (a *Application) Run(ctx context.Context) {
 	componentsCtx, componentsStopCtx := signal.NotifyContext(ctx, syscall.SIGHUP,
 		syscall.SIGINT, syscall.SIGTERM, syscall.SIGQUIT)
@@ -87,7 +108,12 @@ func (a *Application) Run(ctx context.Context) {
 
 	a.serviceProvider.InjectCallbacks()
 
-	err := a.serviceProvider.components.Configure(ctx, a.serviceProvider.config)
+	errs := a.serviceProvider.components.Configure(ctx, a.serviceProvider.config)
+	if errs != nil {
+		a.logger.Error("Error: ", errs)
+	}
+
+	err := a.initPostConfigure(ctx)
 	if err != nil {
 		a.logger.Error("Error: ", err)
 	}

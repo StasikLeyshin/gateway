@@ -2,13 +2,13 @@ package repository
 
 import (
 	"context"
-	"gateway/internal/repository/log/models"
+	"gateway/internal/repository/log/model"
 )
 
 type (
-	FileLog interface {
-		AddLog(ctx context.Context, log *models.Log) error
-		GetLog(ctx context.Context, id string) (*models.Log, error)
-		GetLogs(ctx context.Context) ([]*models.Log, error)
+	LogRepository interface {
+		AddLog(ctx context.Context, request *model.AddLogRequest) (*model.AddLogResponse, error)
+		GetLog(ctx context.Context, request *model.GetLogRequest) (*model.GetLogResponse, error)
+		GetLogs(ctx context.Context) ([]*model.Log, error)
 	}
 )

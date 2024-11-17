@@ -13,22 +13,22 @@ import (
 
 type (
 	Config struct {
-		ConnString   string
-		DatabaseName string
+		ConnectionString string `yaml:"connection_string"`
+		DatabaseName     string `yaml:"database_name"`
 	}
 
 	Client struct {
 		log    log.Logger
 		client *mongo.Client
 
-		Database *database
+		Database *Database
 	}
 
 	Collection struct {
 		collection *mongo.Collection
 	}
 
-	database struct {
+	Database struct {
 		db             *mongo.Database
 		collectionsMux sync.RWMutex
 		collections    map[string]*Collection
@@ -39,9 +39,9 @@ func NewClientMongo() *Client {
 	return &Client{}
 }
 
-func (c *Client) Configure(ctx context.Context, config *Config, init bool) error {
+func (c *Client) Configure(ctx context.Context, config Config) error {
 	// Set client options
-	clientOptions := options.Client().ApplyURI(config.ConnString)
+	clientOptions := options.Client().ApplyURI(config.ConnectionString)
 
 	// Connect to MongoDB
 	client, err := mongo.Connect(ctx, clientOptions)
@@ -87,21 +87,21 @@ func CheckConnection(client *mongo.Client) error {
 	return nil
 }
 
-func newDatabase(db *mongo.Database) *database {
-	return &database{
+func newDatabase(db *mongo.Database) *Database {
+	return &Database{
 		db:          db,
 		collections: make(map[string]*Collection),
 	}
 }
 
-func (d *database) getCollection(name string) *Collection {
+func (d *Database) getCollection(name string) *Collection {
 	d.collectionsMux.RLock()
 	defer d.collectionsMux.RUnlock()
 
 	return d.collections[name]
 }
 
-func (d *database) addCollection(name string) *Collection {
+func (d *Database) addCollection(name string) *Collection {
 	d.collectionsMux.Lock()
 	defer d.collectionsMux.Unlock()
 

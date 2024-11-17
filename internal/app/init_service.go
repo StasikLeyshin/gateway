@@ -2,6 +2,7 @@ package app
 
 import (
 	serviceInterface "gateway/internal/service"
+	"gateway/internal/service/log"
 	roleService "gateway/internal/service/role"
 	"gateway/internal/service/service"
 )
@@ -26,4 +27,14 @@ func (s *serviceProvider) RoleService() serviceInterface.RoleService {
 	}
 
 	return s.role
+}
+
+// LogService
+
+func (s *serviceProvider) LogService() serviceInterface.LogService {
+	if s.logService == nil {
+		s.logService = log.NewFileLog(s.FileLog())
+	}
+
+	return s.logService
 }

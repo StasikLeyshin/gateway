@@ -1,5 +1,9 @@
 package log
 
+import (
+	"io"
+)
+
 type Logger interface {
 	With(args ...any) Logger
 	WithError(err error) Logger
@@ -17,4 +21,6 @@ type Logger interface {
 	Fatalf(template string, args ...any)
 
 	NewNameLogger(componentName string) Logger
+
+	SetLoggerDb(w io.Writer)
 }

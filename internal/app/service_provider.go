@@ -41,7 +41,9 @@ type serviceProvider struct {
 
 	mongoClient *mongo.Client
 
-	fileLog repository.FileLog
+	fileLog repository.LogRepository
+
+	logService serviceInterface.LogService
 }
 
 func newServiceProvider(logger log.Logger) *serviceProvider {
@@ -100,6 +102,13 @@ func (s *serviceProvider) addComponents() error {
 		s.Connector(),
 		(*configuration.Config).GetConnectorConfig,
 		ComponentNameConnector.String(),
+	)
+
+	components.AddComponent(
+		s.components,
+		s.Mongo(),
+		(*configuration.Config).GetMongoConfig,
+		ComponentNameRepositoryMongo.String(),
 	)
 
 	return nil
