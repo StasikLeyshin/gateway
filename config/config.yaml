@@ -10,5 +10,5 @@ route:
   server_manager_address: "localhost:8181"
 
 mongo:
-  connection_string: "mongodb://mongodb-service:27017"
+  connection_string: "mongodb://mongo-service:27017"
   database_name: "gateway"
