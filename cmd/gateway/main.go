@@ -60,7 +60,7 @@ func main1() {
 
 func main() {
 	// Set client options
-	clientOptions := options.Client().ApplyURI("mongodb://mongodb-service:27017")
+	clientOptions := options.Client().ApplyURI("mongodb://mongo-service:27017")
 
 	// Connect to MongoDB
 	client, err := mongo.Connect(context.TODO(), clientOptions)
