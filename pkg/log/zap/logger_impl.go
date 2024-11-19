@@ -19,7 +19,7 @@ type LoggerImpl struct {
 
 func NewDebugLogger(logLevel zapcore.Level, filename string) log.Logger {
 	//encoderCfg := zap.NewProductionEncoderConfig()
-	encoderCfg := zapcore.EncoderConfig{
+	encoderConsoleCfg := zapcore.EncoderConfig{
 		TimeKey:     "datetime",
 		LevelKey:    "level",
 		NameKey:     "logger",
@@ -33,11 +33,24 @@ func NewDebugLogger(logLevel zapcore.Level, filename string) log.Logger {
 		EncodeDuration: zapcore.StringDurationEncoder,
 		EncodeCaller:   zapcore.FullCallerEncoder,
 	}
-	//encoderCfg.EncodeTime = zapcore.ISO8601TimeEncoder
-	//encoderCfg.EncodeCaller = zapcore.FullCallerEncoder
 
-	consoleEncoder := zapcore.NewConsoleEncoder(encoderCfg)
-	fileEncoder := zapcore.NewJSONEncoder(encoderCfg)
+	encoderFileCfg := zapcore.EncoderConfig{
+		TimeKey:     "datetime",
+		LevelKey:    "level",
+		NameKey:     "logger",
+		CallerKey:   "caller",
+		FunctionKey: "func",
+		MessageKey:  "msg",
+		//StacktraceKey:  "stacktrace",
+		LineEnding:     zapcore.DefaultLineEnding,
+		EncodeLevel:    zapcore.CapitalLevelEncoder,
+		EncodeTime:     zapcore.ISO8601TimeEncoder,
+		EncodeDuration: zapcore.StringDurationEncoder,
+		EncodeCaller:   zapcore.FullCallerEncoder,
+	}
+
+	consoleEncoder := zapcore.NewConsoleEncoder(encoderConsoleCfg)
+	fileEncoder := zapcore.NewJSONEncoder(encoderFileCfg)
 
 	file := zapcore.AddSync(&lumberjack.Logger{
 		Filename:   filename,
@@ -66,7 +79,7 @@ func NewDebugLogger(logLevel zapcore.Level, filename string) log.Logger {
 }
 
 func NewLogger(logLevel zapcore.Level, filename string) log.Logger {
-	encoderCfg := zapcore.EncoderConfig{
+	encoderConsoleCfg := zapcore.EncoderConfig{
 		TimeKey:     "datetime",
 		LevelKey:    "level",
 		NameKey:     "logger",
@@ -81,8 +94,23 @@ func NewLogger(logLevel zapcore.Level, filename string) log.Logger {
 		EncodeCaller:   zapcore.ShortCallerEncoder,
 	}
 
-	consoleEncoder := zapcore.NewConsoleEncoder(encoderCfg)
-	fileEncoder := zapcore.NewJSONEncoder(encoderCfg)
+	encoderFileCfg := zapcore.EncoderConfig{
+		TimeKey:     "datetime",
+		LevelKey:    "level",
+		NameKey:     "logger",
+		CallerKey:   "caller",
+		FunctionKey: "func",
+		MessageKey:  "msg",
+		//StacktraceKey:  "stacktrace",
+		LineEnding:     zapcore.DefaultLineEnding,
+		EncodeLevel:    zapcore.CapitalLevelEncoder,
+		EncodeTime:     zapcore.ISO8601TimeEncoder,
+		EncodeDuration: zapcore.StringDurationEncoder,
+		EncodeCaller:   zapcore.ShortCallerEncoder,
+	}
+
+	consoleEncoder := zapcore.NewConsoleEncoder(encoderConsoleCfg)
+	fileEncoder := zapcore.NewJSONEncoder(encoderFileCfg)
 
 	file := zapcore.AddSync(&lumberjack.Logger{
 		Filename:   filename,
@@ -120,7 +148,7 @@ func (log *LoggerImpl) SetLoggerDb(w io.Writer) {
 		MessageKey:  "msg",
 		//StacktraceKey:  "stacktrace",
 		LineEnding:     zapcore.DefaultLineEnding,
-		EncodeLevel:    zapcore.CapitalColorLevelEncoder,
+		EncodeLevel:    zapcore.CapitalLevelEncoder,
 		EncodeTime:     zapcore.RFC3339TimeEncoder,
 		EncodeDuration: zapcore.StringDurationEncoder,
 		EncodeCaller:   zapcore.ShortCallerEncoder,

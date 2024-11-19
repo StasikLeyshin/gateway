@@ -7,13 +7,13 @@ import (
 type (
 	logRepository struct {
 		CollectionName string
-		collection     *mongo.Database
+		client         *mongo.Client
 	}
 )
 
-func NewLogRepository(collectionName string, collection *mongo.Database) *logRepository {
+func NewLogRepository(collectionName string, client *mongo.Client) *logRepository {
 	return &logRepository{
 		CollectionName: collectionName,
-		collection:     collection,
+		client:         client,
 	}
 }

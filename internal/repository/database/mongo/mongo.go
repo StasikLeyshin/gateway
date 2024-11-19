@@ -9,6 +9,7 @@ import (
 	"go.mongodb.org/mongo-driver/mongo"
 	"go.mongodb.org/mongo-driver/mongo/options"
 	"sync"
+	"time"
 )
 
 type (
@@ -41,7 +42,7 @@ func NewClientMongo() *Client {
 
 func (c *Client) Configure(ctx context.Context, config Config) error {
 	// Set client options
-	clientOptions := options.Client().ApplyURI(config.ConnectionString)
+	clientOptions := options.Client().ApplyURI(config.ConnectionString).SetTimeout(time.Second) // TODO: Вынести в конфиг таймаут
 
 	// Connect to MongoDB
 	client, err := mongo.Connect(ctx, clientOptions)
@@ -94,11 +95,17 @@ func newDatabase(db *mongo.Database) *Database {
 	}
 }
 
-func (d *Database) getCollection(name string) *Collection {
-	d.collectionsMux.RLock()
-	defer d.collectionsMux.RUnlock()
+func (d *Database) GetCollection(name string) *Collection {
+	//d.collectionsMux.RLock()
+	//defer d.collectionsMux.RUnlock()
 
-	return d.collections[name]
+	collection, ok := d.collections[name]
+
+	if !ok {
+		collection = d.addCollection(name)
+	}
+
+	return collection
 }
 
 func (d *Database) addCollection(name string) *Collection {

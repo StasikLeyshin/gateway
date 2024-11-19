@@ -32,7 +32,7 @@ func (convert *Log) FromSRepository() *model.Log {
 func (convert *AddLogRequest) ToRepository(value *model.AddLogRequest) *AddLogRequest {
 	return &AddLogRequest{
 		Datetime: value.Datetime,
-		Level:    value.Level,
+		Level:    value.Level.CapitalString(),
 		Logger:   value.Logger,
 		Caller:   value.Caller,
 		FuncName: value.FuncName,

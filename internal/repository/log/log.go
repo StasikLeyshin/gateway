@@ -6,7 +6,7 @@ import (
 )
 
 func (l *logRepository) AddLog(ctx context.Context, request *model.AddLogRequest) (*model.AddLogResponse, error) {
-	err := l.collection.Insert(ctx, request)
+	err := l.client.Database.GetCollection(l.CollectionName).Insert(ctx, request)
 	if err != nil {
 		return nil, err
 	}

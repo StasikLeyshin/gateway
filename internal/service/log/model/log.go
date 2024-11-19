@@ -1,6 +1,9 @@
 package model
 
-import "time"
+import (
+	"go.uber.org/zap/zapcore"
+	"time"
+)
 
 type (
 	Log struct {
@@ -17,12 +20,12 @@ type (
 // AddLog
 type (
 	AddLogRequest struct {
-		Datetime time.Time `json:"datetime"`
-		Level    string    `json:"level"`
-		Logger   string    `json:"logger"`
-		Caller   string    `json:"caller"`
-		FuncName string    `json:"func"`
-		Message  string    `json:"msg"`
+		Datetime time.Time     `json:"datetime"`
+		Level    zapcore.Level `json:"level"`
+		Logger   string        `json:"logger"`
+		Caller   string        `json:"caller"`
+		FuncName string        `json:"func"`
+		Message  string        `json:"msg"`
 	}
 
 	AddLogResponse struct{}
