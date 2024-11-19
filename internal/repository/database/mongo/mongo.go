@@ -36,8 +36,10 @@ type (
 	}
 )
 
-func NewClientMongo() *Client {
-	return &Client{}
+func NewClientMongo(log log.Logger) *Client {
+	return &Client{
+		log: log,
+	}
 }
 
 func (c *Client) Configure(ctx context.Context, config Config) error {

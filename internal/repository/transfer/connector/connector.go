@@ -8,7 +8,6 @@ import (
 	"gateway/pkg/log"
 	"gateway/pkg/utils"
 	"sync/atomic"
-	"time"
 )
 
 type Config struct {
@@ -44,12 +43,6 @@ func (c *Connector) Configure(ctx context.Context, config *Config) error {
 
 func (c *Connector) Start(ctx context.Context) error {
 	c.SyncServersAddress(ctx)
-
-	for i := 0; i < 100; i++ {
-		c.logger.Info("TEST TEST", i)
-
-		time.Sleep(time.Second * 5)
-	}
 
 	return nil
 }

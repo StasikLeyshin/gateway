@@ -8,7 +8,7 @@ import (
 
 func (s *serviceProvider) Mongo() *mongo.Client {
 	if s.mongoClient == nil {
-		s.mongoClient = mongo.NewClientMongo()
+		s.mongoClient = mongo.NewClientMongo(s.logger.NewNameLogger(ComponentNameRepositoryMongo.String()))
 	}
 
 	return s.mongoClient
