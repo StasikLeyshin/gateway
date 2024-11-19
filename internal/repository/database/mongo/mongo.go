@@ -9,7 +9,6 @@ import (
 	"go.mongodb.org/mongo-driver/mongo"
 	"go.mongodb.org/mongo-driver/mongo/options"
 	"sync"
-	"time"
 )
 
 type (
@@ -44,7 +43,7 @@ func NewClientMongo(log log.Logger) *Client {
 
 func (c *Client) Configure(ctx context.Context, config Config) error {
 	// Set client options
-	clientOptions := options.Client().ApplyURI(config.ConnectionString).SetTimeout(time.Second) // TODO: Вынести в конфиг таймаут
+	clientOptions := options.Client().ApplyURI(config.ConnectionString)
 
 	// Connect to MongoDB
 	client, err := mongo.Connect(ctx, clientOptions)
@@ -54,7 +53,7 @@ func (c *Client) Configure(ctx context.Context, config Config) error {
 	}
 
 	// Check the connection
-	err = CheckConnection(client)
+	err = CheckConnection(ctx, client)
 	if err != nil {
 		c.log.WithError(err).Error("failed to connect to mongodb")
 		return err
@@ -81,8 +80,8 @@ func (c *Client) Stop(ctx context.Context) error {
 	return nil
 }
 
-func CheckConnection(client *mongo.Client) error {
-	err := client.Ping(context.Background(), nil)
+func CheckConnection(ctx context.Context, client *mongo.Client) error {
+	err := client.Ping(ctx, nil)
 	if err != nil {
 		return err
 	}
