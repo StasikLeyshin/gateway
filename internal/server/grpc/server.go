@@ -41,10 +41,12 @@ func NewServerGRPC(grpcServer *grpc.Server, logger log.Logger) *ServerGRPC {
 
 func (s *ServerGRPC) Start(ctx context.Context) error {
 	addres := s.config.Address()
+
 	list, err := net.Listen("tcp", addres)
 	if err != nil {
 		return fmt.Errorf("failed to listen addres %s: %v", addres, err)
 	}
+
 	go func() {
 		s.logger.Infof("server is listening the addres %s", addres)
 		err = s.grpcServer.Serve(list)

@@ -40,7 +40,10 @@ func init() {
 }
 
 func GetServerName(fileDesc protoreflect.FileDescriptor, serviceName *protoimpl.ExtensionInfo) *string {
-	opts := fileDesc.Options().(*descriptorpb.FileOptions)
+	opts, ok := fileDesc.Options().(*descriptorpb.FileOptions)
+	if !ok {
+		return nil
+	}
 
 	serverName, _ := proto.GetExtension(opts, serviceName)
 

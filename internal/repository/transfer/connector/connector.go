@@ -42,7 +42,10 @@ func (c *Connector) Configure(ctx context.Context, config *Config) error {
 }
 
 func (c *Connector) Start(ctx context.Context) error {
-	c.SyncServersAddress(ctx)
+	err := c.SyncServersAddress(ctx)
+	if err != nil {
+		return err
+	}
 
 	return nil
 }
@@ -51,7 +54,7 @@ func (c *Connector) Stop(ctx context.Context) error {
 	return nil
 }
 
-func (c *Connector) SyncServersAddress(ctx context.Context) {
+func (c *Connector) SyncServersAddress(ctx context.Context) error {
 	response, err := c.transfer.GetServersAddresses(
 		ctx,
 		&model.GetServersAddressesRequest{
@@ -59,8 +62,8 @@ func (c *Connector) SyncServersAddress(ctx context.Context) {
 		},
 		c.GetManagerServerClient(ctx),
 	)
-
 	if err != nil {
+		return err
 	}
 
 	newClients := make(map[model.ServerType]map[string]*clients.Client)
@@ -75,6 +78,8 @@ func (c *Connector) SyncServersAddress(ctx context.Context) {
 	}
 
 	c.clients.SetAll(newClients)
+
+	return nil
 }
 
 func (c *Connector) GetManagerServerClient(ctx context.Context) *clients.Client {

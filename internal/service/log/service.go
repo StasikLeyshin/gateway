@@ -1,15 +1,20 @@
 package log
 
-import "gateway/internal/repository"
+import (
+	"gateway/internal/service"
+	serviceCore "gateway/internal/service/service"
+)
+
+var _ service.LogService = (*logService)(nil)
 
 type (
-	FileLog struct {
-		fileLog repository.LogRepository
+	logService struct {
+		service *serviceCore.Service
 	}
 )
 
-func NewFileLog(fileLog repository.LogRepository) *FileLog {
-	return &FileLog{
-		fileLog: fileLog,
+func NewLogService(service *serviceCore.Service) *logService {
+	return &logService{
+		service: service,
 	}
 }

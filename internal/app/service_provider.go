@@ -130,7 +130,12 @@ func (s *serviceProvider) Stop(ctx context.Context) error {
 }
 
 func (s *serviceProvider) InjectCallbacks() {
-	s.service.Inject(&service.AppCallbacks{
-		RoleService: s.role,
-	})
+	s.service.Inject(
+		&service.AppCallbacks{
+			RoleService: s.RoleService(),
+			LogService:  s.LogService(),
+		}, &service.AppRepositoryCallbacks{
+			LogRepository: s.LogRepository(),
+		},
+	)
 }

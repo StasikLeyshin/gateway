@@ -73,41 +73,41 @@ func (c *Components[Config]) checkStatus(component *Component[Config], status St
 }
 
 func (c *Components[Config]) Start(ctx context.Context) []error {
-	errors := make([]error, len(c.components))
+	errors := make([]error, 0, len(c.components))
 	for _, component := range c.components {
 		err := component.control.Start(ctx)
 		if err != nil {
 			errors = append(errors, c.actionError(component, "error when starting the component", err))
 		} else {
-			errors = append(errors, c.checkStatus(component, Started))
+			if err = c.checkStatus(component, Started); err != nil {
+				errors = append(errors, err)
+			}
 		}
 	}
 	return errors
 }
 
 func (c *Components[Config]) Stop(ctx context.Context) []error {
-	errors := make([]error, len(c.components))
+	errors := make([]error, 0, len(c.components))
 	for _, component := range c.components {
 		err := component.control.Stop(ctx)
 		if err != nil {
 			errors = append(errors, c.actionError(component, "error when stopping the component", err))
 		} else {
-			errors = append(errors, c.checkStatus(component, Stopped))
+			if err = c.checkStatus(component, Stopped); err != nil {
+				errors = append(errors, err)
+			}
 		}
 	}
 	return errors
 }
 
 func (c *Components[Config]) Configure(ctx context.Context, config Config) []error {
-	//errors := make([]error, len(c.components))
-	var errors []error
+	errors := make([]error, 0, len(c.components))
 	for _, component := range c.components {
 		err := component.configuration(ctx, config)
 		if err != nil {
-			//return c.actionError(component, "component configuration error", err)
 			errors = append(errors, c.actionError(component, "component configuration error", err))
-		} else {
-			//errors = append(errors, c.checkStatus(component, Stopped))
 		}
 	}
 	return errors

@@ -7,7 +7,7 @@ import (
 	"gateway/internal/service/log/model"
 )
 
-func (f *FileLog) Write(p []byte) (n int, err error) {
+func (l *logService) Write(p []byte) (n int, err error) {
 	var addLog model.AddLogRequest
 
 	err = json.Unmarshal(p, &addLog)
@@ -15,10 +15,20 @@ func (f *FileLog) Write(p []byte) (n int, err error) {
 		return 0, err
 	}
 
-	_, err = f.fileLog.AddLog(context.Background(), new(modelRep.AddLogRequest).ToRepository(&addLog))
+	_, err = l.service.Repository.LogRepository.AddLog(context.Background(), new(modelRep.AddLogRequest).ToRepository(&addLog))
 	if err != nil {
 		return 0, err
 	}
 
 	return 1, nil
+}
+
+func (l *logService) AddLog(ctx context.Context, request *model.AddLogRequest) (*model.AddLogResponse, error) {
+
+	return nil, nil
+}
+
+func (l *logService) GetLog(ctx context.Context, request *model.GetLogRequest) (*model.GetLogResponse, error) {
+
+	return nil, nil
 }

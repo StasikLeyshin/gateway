@@ -2,22 +2,33 @@ package app
 
 import (
 	"context"
+	"gateway/internal/app/configuration"
 	"gateway/pkg/log"
+	"go.uber.org/zap"
+	"go.uber.org/zap/zapcore"
+	"os"
 	"os/signal"
+	"path/filepath"
 	"syscall"
+	"time"
+)
+
+const (
+	configFolder = "config"
+	logFolder    = "log"
 )
 
 type Application struct {
 	serviceProvider *serviceProvider
 	logger          log.Logger
 	configPath      string
+	loggerPath      string
+
+	levelLogger zapcore.Level
 }
 
-func NewApp(ctx context.Context, configPath string, logger log.Logger) (*Application, error) {
-	app := &Application{
-		configPath: configPath,
-		logger:     logger,
-	}
+func NewApp(ctx context.Context) (*Application, error) {
+	app := &Application{}
 
 	err := app.initDeps(ctx)
 	if err != nil {
@@ -29,6 +40,8 @@ func NewApp(ctx context.Context, configPath string, logger log.Logger) (*Applica
 
 func (a *Application) initDeps(ctx context.Context) error {
 	inits := []func(context.Context) error{
+		a.initENV,
+		a.initLogger,
 		a.initServiceProvider,
 		a.initConfig,
 		a.initGRPCServer,
@@ -42,6 +55,45 @@ func (a *Application) initDeps(ctx context.Context) error {
 			return err
 		}
 	}
+
+	return nil
+}
+
+func (a *Application) initENV(_ context.Context) error {
+	var deployFolder string
+
+	configFileName := "config.local.yaml"
+
+	levelLogger := zap.DebugLevel
+	fileNameLogger := "app.log"
+
+	if IsDeploy := os.Getenv("LOGGER_LEVEL"); IsDeploy != "" {
+		levelLogger = zap.InfoLevel
+	}
+
+	if path := os.Getenv("DEPLOY_PATH"); path != "" {
+		configFileName = "config.yaml"
+		deployFolder = path
+
+		// Нужно для того, чтобы успела скопироваться папка с конфигами yaml в volume k8s
+		time.Sleep(time.Second * 1)
+	}
+
+	// Путь до файла с конфигурацией проекта
+	a.configPath = filepath.Join(deployFolder, configFolder, configFileName)
+
+	// Путь до файла с логами
+	a.loggerPath = filepath.Join(deployFolder, logFolder, fileNameLogger)
+
+	a.levelLogger = levelLogger
+
+	return nil
+}
+
+func (a *Application) initLogger(_ context.Context) error {
+	// Создаём логгер
+	//a.logger = zapImpl.NewLogger()
+	a.logger = configuration.NewLogger(a.levelLogger, a.loggerPath)
 
 	return nil
 }
@@ -109,7 +161,7 @@ func (a *Application) Run(ctx context.Context) {
 	a.serviceProvider.InjectCallbacks()
 
 	errs := a.serviceProvider.components.Configure(ctx, a.serviceProvider.config)
-	if errs != nil {
+	if len(errs) > 0 {
 		a.logger.Error("Error: ", errs)
 	}
 
@@ -118,7 +170,10 @@ func (a *Application) Run(ctx context.Context) {
 		a.logger.Error("Error: ", err)
 	}
 
-	a.serviceProvider.components.Start(ctx)
+	errs = a.serviceProvider.components.Start(ctx)
+	if len(errs) > 0 {
+		a.logger.Error("Error: ", errs)
+	}
 
 	<-componentsCtx.Done()
 

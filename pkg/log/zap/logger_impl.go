@@ -1,7 +1,6 @@
 package zap
 
 import (
-	"fmt"
 	"gateway/pkg/log"
 	"go.uber.org/zap"
 	"go.uber.org/zap/zapcore"
@@ -10,12 +9,27 @@ import (
 	"os"
 )
 
-const errKey = "error"
+const (
+	errKey  = "error"
+	nameKey = "logger"
+)
 
-type LoggerImpl struct {
-	logger   *zap.SugaredLogger
-	logLevel zapcore.Level
-}
+type (
+	Config struct {
+		logLevel zapcore.Level
+		writer   io.Writer
+	}
+
+	Logger struct {
+		logger   *zap.SugaredLogger
+		logLevel zapcore.Level
+	}
+
+	LoggerImpl struct {
+		loggerImpl *Logger
+		name       string
+	}
+)
 
 func NewDebugLogger(logLevel zapcore.Level, filename string) log.Logger {
 	//encoderCfg := zap.NewProductionEncoderConfig()
@@ -73,8 +87,10 @@ func NewDebugLogger(logLevel zapcore.Level, filename string) log.Logger {
 	).Sugar()
 
 	return &LoggerImpl{
-		logger:   logger,
-		logLevel: logLevel,
+		loggerImpl: &Logger{
+			logger:   logger,
+			logLevel: logLevel,
+		},
 	}
 }
 
@@ -133,8 +149,10 @@ func NewLogger(logLevel zapcore.Level, filename string) log.Logger {
 	).Sugar()
 
 	return &LoggerImpl{
-		logger:   logger,
-		logLevel: logLevel,
+		loggerImpl: &Logger{
+			logger:   logger,
+			logLevel: logLevel,
+		},
 	}
 }
 
@@ -157,8 +175,8 @@ func (log *LoggerImpl) SetLoggerDb(w io.Writer) {
 	fileEncoder := zapcore.NewJSONEncoder(encoderCfg)
 
 	core := zapcore.NewTee(
-		zapcore.NewCore(fileEncoder, zapcore.AddSync(w), log.logLevel),
-		log.logger.Desugar().Core(),
+		zapcore.NewCore(fileEncoder, zapcore.AddSync(w), log.loggerImpl.logLevel),
+		log.loggerImpl.logger.Desugar().Core(),
 	)
 
 	logger := zap.New(
@@ -169,19 +187,31 @@ func (log *LoggerImpl) SetLoggerDb(w io.Writer) {
 		//zap.AddStacktrace(logLevel),
 	).Sugar()
 
-	log.logger = logger
-
-	fmt.Println(log)
+	log.loggerImpl.logger = logger
 }
 
 func (log *LoggerImpl) NewNameLogger(componentName string) log.Logger {
-	log.logger = log.logger.Named(componentName)
-	return log
+
+	return &LoggerImpl{loggerImpl: log.loggerImpl,
+		name: componentName,
+	}
+}
+
+func (log *LoggerImpl) WithName(args ...any) *LoggerImpl {
+	return &LoggerImpl{
+		loggerImpl: &Logger{
+			logger:   log.loggerImpl.logger.With(args...),
+			logLevel: log.loggerImpl.logLevel,
+		},
+	}
 }
 
 func (log *LoggerImpl) With(args ...any) log.Logger {
 	return &LoggerImpl{
-		logger: log.logger.With(args...),
+		loggerImpl: &Logger{
+			logger:   log.loggerImpl.logger.With(args...),
+			logLevel: log.loggerImpl.logLevel,
+		},
 	}
 }
 
@@ -190,41 +220,41 @@ func (log *LoggerImpl) WithError(err error) log.Logger {
 }
 
 func (log *LoggerImpl) Debug(args ...any) {
-	log.logger.Debug(args...)
+	log.WithName(nameKey, log.name).loggerImpl.logger.Debug(args...)
 }
 
 func (log *LoggerImpl) Info(args ...any) {
-	log.logger.Info(args...)
+	log.WithName(nameKey, log.name).loggerImpl.logger.Info(args...)
 }
 
 func (log *LoggerImpl) Warn(args ...any) {
-	log.logger.Warn(args...)
+	log.WithName(nameKey, log.name).loggerImpl.logger.Warn(args...)
 }
 
 func (log *LoggerImpl) Error(args ...any) {
-	log.logger.Error(args...)
+	log.WithName(nameKey, log.name).loggerImpl.logger.Error(args...)
 }
 
 func (log *LoggerImpl) Fatal(args ...any) {
-	log.logger.Fatal(args...)
+	log.WithName(nameKey, log.name).loggerImpl.logger.Fatal(args...)
 }
 
 func (log *LoggerImpl) Debugf(template string, args ...any) {
-	log.logger.Debugf(template, args...)
+	log.WithName(nameKey, log.name).loggerImpl.logger.Debugf(template, args...)
 }
 
 func (log *LoggerImpl) Infof(template string, args ...any) {
-	log.logger.Infof(template, args...)
+	log.WithName(nameKey, log.name).loggerImpl.logger.Infof(template, args...)
 }
 
 func (log *LoggerImpl) Warnf(template string, args ...any) {
-	log.logger.Warnf(template, args...)
+	log.WithName(nameKey, log.name).loggerImpl.logger.Warnf(template, args...)
 }
 
 func (log *LoggerImpl) Errorf(template string, args ...any) {
-	log.logger.Errorf(template, args...)
+	log.WithName(nameKey, log.name).loggerImpl.logger.Errorf(template, args...)
 }
 
 func (log *LoggerImpl) Fatalf(template string, args ...any) {
-	log.logger.Fatalf(template, args...)
+	log.WithName(nameKey, log.name).loggerImpl.logger.Fatalf(template, args...)
 }

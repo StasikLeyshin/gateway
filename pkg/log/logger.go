@@ -1,6 +1,7 @@
 package log
 
 import (
+	"go.uber.org/zap/zapcore"
 	"io"
 )
 
@@ -24,3 +25,5 @@ type Logger interface {
 
 	SetLoggerDb(w io.Writer)
 }
+
+type Level zapcore.Level

@@ -33,7 +33,7 @@ func (s *serviceProvider) RoleService() serviceInterface.RoleService {
 
 func (s *serviceProvider) LogService() serviceInterface.LogService {
 	if s.logService == nil {
-		s.logService = log.NewFileLog(s.FileLog())
+		s.logService = log.NewLogService(s.Service())
 	}
 
 	return s.logService
