@@ -33,7 +33,7 @@ type grpcFunc[C, Req, Resp any] func(client C, ctx context.Context, request Req,
 
 type grpcToAnotherServerFunc[Req, Resp any] grpcFunc[pb.ManageServiceClient, Req, Resp]
 
-func CallGRPCorHTTP[
+func CallGRPCOrHTTP[
 	GrpcRequest any,
 	GrpcResponse any,
 	TransferResponse interface {

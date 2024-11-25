@@ -7,13 +7,16 @@ type TransferFunc[Request, Response any] func(ctx context.Context, request Reque
 func DoTransfer[
 	Request any,
 	Response any,
+	TransferRequest any,
+	TransferResponse any,
 ](
 	ctx context.Context,
-	client any,
-	service *Service,
 	request Request,
+	service *Service,
 	transfer TransferFunc[Request, Response],
 ) (Response, error) {
+	client := service.Connector.GetClientFromServerType(ctx)
+
 	resp, err := transfer(ctx, request, client)
 
 	return resp, err

@@ -8,7 +8,7 @@ import (
 )
 
 func (s *serverManagerTransfer) GetServers(ctx context.Context, request *model.GetServersRequest, client any) (*model.GetServersResponse, error) {
-	response, err := transfer.CallGRPCorHTTP(ctx, client, request, pb.ManageServiceClient.GetServers, new(model.GetServersResponse))
+	response, err := transfer.CallGRPCOrHTTP(ctx, client, request, pb.ManageServiceClient.GetServers, new(model.GetServersResponse))
 	return response, err
 }
 

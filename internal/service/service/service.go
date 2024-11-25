@@ -20,7 +20,7 @@ type Service struct {
 	logger log.Logger
 
 	Transfer  transfer.Transfer
-	connector transfer.Connector
+	Connector transfer.Connector
 
 	Services   *AppCallbacks
 	Repository *AppRepositoryCallbacks
@@ -30,7 +30,7 @@ func NewService(logger log.Logger, transfer transfer.Transfer, connector transfe
 	return &Service{
 		logger:    logger,
 		Transfer:  transfer,
-		connector: connector,
+		Connector: connector,
 	}
 }
 
