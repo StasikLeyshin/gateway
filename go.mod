@@ -11,9 +11,11 @@ require (
 )
 
 require (
+	github.com/StasikLeyshin/libs-proto/grpc-gateway/manage-server-service v0.0.9
 	github.com/StasikLeyshin/libs-proto/grpc-gateway/role-service v0.0.12
-	github.com/StasikLeyshin/libs-proto/grpc/manage-server-service v0.0.16
+	github.com/StasikLeyshin/libs-proto/grpc/manage-server-service v0.0.18
 	github.com/StasikLeyshin/libs-proto/grpc/role-service v0.0.0
+	github.com/dave/dst v0.27.3
 	go.mongodb.org/mongo-driver v1.17.1
 	go.uber.org/zap v1.27.0
 )
@@ -28,13 +30,15 @@ require (
 	github.com/youmark/pkcs8 v0.0.0-20240726163527-a2c0da244d78 // indirect
 	go.uber.org/multierr v1.11.0 // indirect
 	golang.org/x/crypto v0.26.0 // indirect
+	golang.org/x/mod v0.17.0 // indirect
 	golang.org/x/sync v0.8.0 // indirect
+	golang.org/x/tools v0.21.1-0.20240508182429-e35e4ccd0d2d // indirect
 )
 
 require (
 	github.com/golang/protobuf v1.5.3 // indirec
 	github.com/rogpeppe/go-internal v1.11.0 // indirect
-	golang.org/x/net v0.21.0 // indirect
+	golang.org/x/net v0.25.0 // indirect
 	golang.org/x/sys v0.23.0 // indirect
 	golang.org/x/text v0.17.0 // indirect
 	google.golang.org/genproto v0.0.0-20231030173426-d783a09b4405 // indirect
